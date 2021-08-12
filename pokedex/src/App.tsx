@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import axios from 'axios';
+import {useEffect, useState} from 'react';
 
 function App() {
 
@@ -37,25 +38,54 @@ try {
 }
   */
 
-// interface PokemonInterface {
-//   id: number;
-//   image: string;
-//   name: string;
-//   types: string[];
-// }
-
-
 //  axios.get<PokemonInterface[]>('https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=Pikachu')
 //       .then((response) => {
 //           console.log(response.data);
 //       });
 
+// const [pokemon, setPokemon] = useState([]);
+
+// useEffect(() => {
+//   async function getPokemon() {
+//     const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon');
+//     setPokemon(response.data.data);
+//   }
+//   getPokemon();
+// }, []);
+
+// console.log('pokemon', pokemon);
+
+interface PokemonInterface {
+  id: number;
+  image: string;
+  name: string;
+  types: string[];
+}
+
+useEffect(() => {
+  getPokemon();
+}, []);
+
+const [pokemon, setPokemon] = useState<PokemonInterface[]>([]);
+
+const getPokemon = async () => {
+  const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon');
+  setPokemon(response.data.data);
+}
+
+
+console.log('pokemon', pokemon);
 
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Pokedex</h1>
+        <ul>
+
+          {pokemon?.map((poke) => <li key={poke.id}>{poke.name}</li>)}
+
+        </ul>
       </header>
     </div>
   );
