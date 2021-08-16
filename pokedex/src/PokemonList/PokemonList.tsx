@@ -1,16 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import Card from '@material-ui/core/Card';
 
 
 function PokemonList() {
 
-    //get the list of pokemons
-    //GET https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=Pikachu
-    //this api gets one pokemon "Pikachu"
-    //GET https://intern-pokedex.myriadapps.com/api/v1/pokemon
-    //gets all the pokemons on a page.
-    //display the pokemons
 
     /*
     const verifyUser = async function(username, password){
@@ -38,27 +33,8 @@ function PokemonList() {
   }
     */
 
-    //  axios.get<PokemonInterface[]>('https://intern-pokedex.myriadapps.com/api/v1/pokemon?name=Pikachu')
-    //       .then((response) => {
-    //           console.log(response.data);
-    //       });
-
-    // const [pokemon, setPokemon] = useState([]);
-
-    // useEffect(() => {
-    //   async function getPokemon() {
-    //     const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon');
-    //     setPokemon(response.data.data);
-    //   }
-    //   getPokemon();
-    // }, []);
-
-    // console.log('pokemon', pokemon);
-
-
-
     interface PokemonListInterface {
-        id: number;
+        id: string;
         image: string;
         name: string;
         types: string[];
@@ -81,20 +57,24 @@ function PokemonList() {
         total: number
     }
 
-    useEffect(() => {
-        getPokemonInfo();
-    }, []);
 
     const history = useHistory();
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
-    const [page, setPage] = useState<String>('');
+    const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
+
+
+    useEffect(() => {
+        getPokemonInfo();
+    }, []);
 
 
     const getPokemonInfo = async () => {
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon');
+        console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
+        setCurrentPage(response.data.meta.current_page);
 
     }
 
@@ -106,20 +86,31 @@ function PokemonList() {
     const nextPage = async () => {
         console.log('next page', pokemonData?.next);
         const response = await axios.get(`${pokemonData?.next}`);
-        setPage(response.data);
+        setPokemonList(response.data.data);
+        setPokemonData(response.data.links);
+        setCurrentPage(response.data.meta.current_page);
 
     }
 
-
+    const prevPage = async () => {
+        console.log('previous page', pokemonData?.prev);
+        const response = await axios.get(`${pokemonData?.prev}`);
+        setPokemonList(response.data.data);
+        setPokemonData(response.data.links);
+        setCurrentPage(response.data.meta.current_page);
+    }
 
 
     return (
         <main className='App-main'>
+            
             <button onClick={nextPage}>next page</button>
+            <button onClick={prevPage}>previous page</button>
+            <p>{currentPage}</p>
 
             <ul>
 
-                {pokemonList?.map((poke) => <li key={poke.id}><img src={poke.image} alt={poke.name} onClick={() => console.log(`${poke.name} clicked`)}></img></li>)}
+                {pokemonList?.map((poke) => <li key={poke.id}><img src={poke.image} alt={poke.name} onClick={() => history.push(`/detail/${poke.id}`)}></img></li>)}
 
             </ul>
         </main>

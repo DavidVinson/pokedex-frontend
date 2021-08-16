@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import { HashRouter as Router, Route, NavLink } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './Header/Header';
 import Footer from './Footer/Footer';
-import PokemonList2 from './PokemonList/PokemonList2';
+import PokemonList from './PokemonList/PokemonList';
 import PokemonDetail from './PokemonDetail/PokemonDetail';
 
 function App() {
@@ -13,13 +13,16 @@ function App() {
     <div className="App">
       <Header />
       <Router>
-        <Route exact path="/">
-          <PokemonList2 />
-        </Route>
+        <Switch>
+          <Route exact path="/">
+            <PokemonList />
+          </Route>
 
-        <Route exact path="/detail:id">
-          <PokemonDetail />
-        </Route>
+          <Route path="/detail/:pokeID">
+            <PokemonDetail />
+          </Route>
+
+        </Switch>
       </Router>
       <Footer />
     </div>
