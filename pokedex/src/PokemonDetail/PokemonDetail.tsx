@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
+// import Card from '@material-ui/core/Card';
+// import CardHeader from '@material-ui/core/CardHeader';
+// import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-
 
 
 function PokemonDetail() {
@@ -31,18 +30,19 @@ function PokemonDetail() {
         description: string
     }
 
-    interface PokemonLinksInterface {
-        first: string;
-        last: string;
-        prev: null | string;
-        next: string
-    }
+    // interface PokemonLinksInterface {
+    //     first: string;
+    //     last: string;
+    //     prev: null | string;
+    //     next: string
+    // }
 
 
     const history = useHistory();
-    const { pokeID } = useParams<{ pokeID: string }>();
-    const { currentPage } = useParams<{ currentPage: string }>();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
+    const { currentPage, pokeID } = useParams<{ currentPage: string, pokeID: string }>();
+    console.log('the current page from params', currentPage);
+    console.log('the poke id from params', pokeID);
 
 
     const getPageDetail = async () => {
@@ -56,41 +56,39 @@ function PokemonDetail() {
     }, []);
 
 
-    console.log(`pokeDatail Page`, pokemonDetail);
-
     return (
 
-        <Card variant="outlined">
-            <CardContent>
-                
-                <Button onClick={() => history.push(`/`)}>back</Button>
-                <h2>
-                    {pokemonDetail?.name} #{pokeID}
-                </h2>
+        <main>
 
-                {pokemonDetail?.types.map((type) => <p>{type}</p>)}
-                <img src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+            {/* <Button onClick={() => history.push(`/page/${currentPage}`)}>back</Button> */}
+            <Button onClick={() => history.push('/')}>back</Button>
+            <h2>
+                {pokemonDetail?.name} #{pokeID}
+            </h2>
+
+            {pokemonDetail?.types.map((type) => <p>{type.toUpperCase()} </p>)}
+            <img src={pokemonDetail?.image} alt={pokemonDetail?.name} />
 
 
-                <p>HP {pokemonDetail?.stats.hp}</p>
-                <p>Attack {pokemonDetail?.stats.attack}</p>
-                <p>Defense {pokemonDetail?.stats.defense}</p>
-                <p>Speed {pokemonDetail?.stats.speed}</p>
-                <p>Sp Atk {pokemonDetail?.stats["special-attack"]}</p>
-                <p>Sp Def {pokemonDetail?.stats["special-defense"]}</p>
+            <p>HP {pokemonDetail?.stats.hp}</p>
+            <p>Attack {pokemonDetail?.stats.attack}</p>
+            <p>Defense {pokemonDetail?.stats.defense}</p>
+            <p>Speed {pokemonDetail?.stats.speed}</p>
+            <p>Sp Atk {pokemonDetail?.stats["special-attack"]}</p>
+            <p>Sp Def {pokemonDetail?.stats["special-defense"]}</p>
 
-                <p>{pokemonDetail?.description}</p>
+            <p><b>{pokemonDetail?.genus}</b></p>
+            <p>{pokemonDetail?.description}</p>
 
+            <div className="profile">
                 <h4><b>Profile</b></h4>
-                <p><b>Height:</b> {pokemonDetail?.height} m</p>
-                <p><b>Weight:</b> {pokemonDetail?.weight}</p>
-                <p><b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => <span>{group}, </span>)}</p>
-                <p><b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => <span>{ability}, </span>)}</p>
+            </div>
+            <p><b>Height:</b> {pokemonDetail?.height} m</p>
+            <p><b>Weight:</b> {pokemonDetail?.weight}</p>
+            <p className="capitalize"><b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}</p>
+            <p className="capitalize"><b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}</p>
 
-
-            </CardContent>
-
-        </Card>
+        </main>
 
     );
 }

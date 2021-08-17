@@ -11,11 +11,11 @@ function SearchInput() {
     }
 
     useEffect(() => {
-        const params = new URLSearchParams()
+        const params = new URLSearchParams();
         if (query) {
-            params.append("name", query)
+            params.append("name", query);
         } else {
-            params.delete("name")
+            params.delete("name");
         }
 
         history.push({search: params.toString()})
@@ -23,7 +23,7 @@ function SearchInput() {
 
     return (
 
-        <input type="text" value={query} onChange={onChange} />
+        <input type="text" placeholder="Search Pok&eacute;dex" value={query} onChange={onChange} />
     );
 }
 

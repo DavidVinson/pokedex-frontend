@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import SearchInput from '../SearchInput/SearchInput';
 
 
 function PokemonList() {
@@ -59,9 +63,13 @@ function PokemonList() {
 
 
     const history = useHistory();
+    const params = useParams();
+    console.log('list page params', params);
+
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
+    const [searchPath, setSearchPath] = useState<PokemonMetaInterface>();
 
 
     useEffect(() => {
@@ -71,12 +79,27 @@ function PokemonList() {
 
     const getPokemonInfo = async () => {
 
+        // if (myCurrentPage) {
+        //     const response = await axios.get(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=${myCurrentPage}`);
+        //     console.log('response', response.data);
+        //     setPokemonList(response.data.data);
+        //     setPokemonData(response.data.links);
+        //     setCurrentPage(response.data.meta.current_page);
+
+        // } else {
+        //     const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
+        //     console.log('response', response.data);
+        //     setPokemonList(response.data.data);
+        //     setPokemonData(response.data.links);
+        //     setCurrentPage(response.data.meta.current_page);
+        // }
+
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
         console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
-
+        setSearchPath(response.data.meta.path);
 
     }
 
@@ -100,21 +123,30 @@ function PokemonList() {
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
+
     }
 
 
     return (
-        <main className='App-main'>
+        <main>
 
-            <button onClick={nextPage}>next page</button>
             <button onClick={prevPage}>previous page</button>
-            <p>{currentPage}</p>
+            {/* <input type="text"placeholder="Pok&eacute;dex"></input> */}
+            <SearchInput />
+            <button onClick={nextPage}>next page</button>
+            <p>Page: {currentPage}</p>
 
-            <div>
+            <Grid container spacing={2}>
+                {pokemonList?.map((poke) =>
+                    <Card className="poke-card" variant="outlined" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
+                        <CardHeader title={poke.name}></CardHeader>
+                        <CardContent>
+                            <img src={poke.image} alt={poke.name}></img>
+                            {poke.types.map((type) => <p>{type.toUpperCase()}</p>)}
+                        </CardContent>
+                    </Card>)}
+            </Grid>
 
-                {pokemonList?.map((poke) => <div key={poke.id}><img src={poke.image} alt={poke.name} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}></img></div>)}
-
-            </div>
         </main>
 
     );

@@ -1,9 +1,10 @@
 
+
 function Header() {
 
     return (
         <header className="App-header">
-            <h1>Pokedex</h1>
+            <h1>Pok&eacute;dex</h1>
         </header>
 
     );
