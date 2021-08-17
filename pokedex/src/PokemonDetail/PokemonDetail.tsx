@@ -31,9 +31,17 @@ function PokemonDetail() {
         description: string
     }
 
+    interface PokemonLinksInterface {
+        first: string;
+        last: string;
+        prev: null | string;
+        next: string
+    }
+
 
     const history = useHistory();
     const { pokeID } = useParams<{ pokeID: string }>();
+    const { currentPage } = useParams<{ currentPage: string}>();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
 
 
@@ -54,7 +62,7 @@ function PokemonDetail() {
 
         <Card variant="outlined">
             <CardContent>
-            <Button onClick={() => history.push('/')}>back</Button>
+            <Button onClick={() => history.push(`/`)}>back</Button>
             <h2>
                 {pokemonDetail?.name} #{pokeID}
             </h2>

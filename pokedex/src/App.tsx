@@ -2,11 +2,11 @@ import React from 'react';
 import './App.css';
 import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './Header/Header';
-import Footer from './Footer/Footer';
 import PokemonList from './PokemonList/PokemonList';
 import PokemonDetail from './PokemonDetail/PokemonDetail';
 
 function App() {
+
 
   return (
 
@@ -18,13 +18,12 @@ function App() {
             <PokemonList />
           </Route>
 
-          <Route path="/detail/:pokeID">
+          <Route path="/detail/:pageNum/:pokeID">
             <PokemonDetail />
           </Route>
 
         </Switch>
       </Router>
-      <Footer />
     </div>
   );
 }

@@ -48,13 +48,13 @@ function PokemonList() {
     }
 
     interface PokemonMetaInterface {
-        current_page: number;
-        from: number;
-        last_page: number;
+        current_page: string;
+        from: string;
+        last_page: string;
         path: string;
-        per_page: number;
-        to: number;
-        total: number
+        per_page: string;
+        to: string;
+        total: string
     }
 
 
@@ -70,11 +70,13 @@ function PokemonList() {
 
 
     const getPokemonInfo = async () => {
-        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon');
+
+        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
         console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
+
 
     }
 
@@ -103,16 +105,16 @@ function PokemonList() {
 
     return (
         <main className='App-main'>
-            
+
             <button onClick={nextPage}>next page</button>
             <button onClick={prevPage}>previous page</button>
             <p>{currentPage}</p>
 
-            <ul>
+            <div>
 
-                {pokemonList?.map((poke) => <li key={poke.id}><img src={poke.image} alt={poke.name} onClick={() => history.push(`/detail/${poke.id}`)}></img></li>)}
+                {pokemonList?.map((poke) => <div key={poke.id}><img src={poke.image} alt={poke.name} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}></img></div>)}
 
-            </ul>
+            </div>
         </main>
 
     );
