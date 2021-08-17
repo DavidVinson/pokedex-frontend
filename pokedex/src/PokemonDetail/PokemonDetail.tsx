@@ -41,7 +41,7 @@ function PokemonDetail() {
 
     const history = useHistory();
     const { pokeID } = useParams<{ pokeID: string }>();
-    const { currentPage } = useParams<{ currentPage: string}>();
+    const { currentPage } = useParams<{ currentPage: string }>();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
 
 
@@ -62,11 +62,31 @@ function PokemonDetail() {
 
         <Card variant="outlined">
             <CardContent>
-            <Button onClick={() => history.push(`/`)}>back</Button>
-            <h2>
-                {pokemonDetail?.name} #{pokeID}
-            </h2>
-            <img src={pokemonDetail?.image} alt={pokemonDetail?.name}/>
+                
+                <Button onClick={() => history.push(`/`)}>back</Button>
+                <h2>
+                    {pokemonDetail?.name} #{pokeID}
+                </h2>
+
+                {pokemonDetail?.types.map((type) => <p>{type}</p>)}
+                <img src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+
+
+                <p>HP {pokemonDetail?.stats.hp}</p>
+                <p>Attack {pokemonDetail?.stats.attack}</p>
+                <p>Defense {pokemonDetail?.stats.defense}</p>
+                <p>Speed {pokemonDetail?.stats.speed}</p>
+                <p>Sp Atk {pokemonDetail?.stats["special-attack"]}</p>
+                <p>Sp Def {pokemonDetail?.stats["special-defense"]}</p>
+
+                <p>{pokemonDetail?.description}</p>
+
+                <h4><b>Profile</b></h4>
+                <p><b>Height:</b> {pokemonDetail?.height} m</p>
+                <p><b>Weight:</b> {pokemonDetail?.weight}</p>
+                <p><b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => <span>{group}, </span>)}</p>
+                <p><b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => <span>{ability}, </span>)}</p>
+
 
             </CardContent>
 
