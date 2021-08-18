@@ -60,8 +60,8 @@ function PokemonDetail() {
 
         <main>
 
-            {/* <Button onClick={() => history.push(`/page/${currentPage}`)}>back</Button> */}
-            <Button onClick={() => history.push('/')}>back</Button>
+            {/* <Button onClick={() => history.goBack()}>back</Button> */}
+            <Button onClick={() => history.push(`/page/${currentPage}`)}>back</Button>
             <h2>
                 {pokemonDetail?.name} #{pokeID}
             </h2>
