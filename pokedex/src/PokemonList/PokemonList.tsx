@@ -121,10 +121,8 @@ function PokemonList() {
     }
 
     async function searchPokedex(event: ChangeEvent<HTMLInputElement>) {
-        console.log('in searchPokedex', event.target.value);
         const pokemonName = event.target.value;
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: 1, name: pokemonName} });
-        console.log('search result', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
 
