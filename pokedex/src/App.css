@@ -28,6 +28,11 @@
   color: #61dafb;
 }
 
+.main {
+  background-color: lightseagreen;
+  padding-top: 20px;
+}
+
 p.capitalize {
   text-transform: capitalize;
 }
@@ -46,7 +51,7 @@ p.capitalize {
 }
 
 .poke-card {
-  max-width: 250px;
+  min-width: 250px;
   margin: 5px;
 
 }

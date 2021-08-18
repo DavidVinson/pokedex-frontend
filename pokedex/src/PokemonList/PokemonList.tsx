@@ -1,11 +1,9 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import SearchInput from '../SearchInput/SearchInput';
 
 
 function PokemonList() {
@@ -64,7 +62,7 @@ function PokemonList() {
 
     const history = useHistory();
     const params = useParams();
-    console.log('list page params', params);
+    // console.log('list page params', params);
 
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
@@ -94,18 +92,14 @@ function PokemonList() {
         //     setCurrentPage(response.data.meta.current_page);
         // }
 
+
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
-        console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
         setSearchPath(response.data.meta.path);
 
     }
-
-
-    console.log('pokemonList', pokemonList);
-    console.log('pokemonData', pokemonData);
 
 
     const nextPage = async () => {
@@ -126,23 +120,34 @@ function PokemonList() {
 
     }
 
+    async function searchPokedex(event: ChangeEvent<HTMLInputElement>) {
+        console.log('in searchPokedex', event.target.value);
+        const pokemonName = event.target.value;
+        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: 1, name: pokemonName} });
+        console.log('search result', response.data);
+        setPokemonList(response.data.data);
+        setPokemonData(response.data.links);
+
+    }
+
 
     return (
-        <main>
+        <main className="main">
 
             <button onClick={prevPage}>previous page</button>
-            {/* <input type="text"placeholder="Pok&eacute;dex"></input> */}
-            <SearchInput />
+             
+            <input type="text" placeholder="Pok&eacute;dex" onChange={(event) => searchPokedex(event)}></input>
+
             <button onClick={nextPage}>next page</button>
             <p>Page: {currentPage}</p>
 
             <Grid container spacing={2}>
                 {pokemonList?.map((poke) =>
                     <Card className="poke-card" variant="outlined" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
-                        <CardHeader title={poke.name}></CardHeader>
+                       <h4>{poke.name}</h4>
                         <CardContent>
                             <img src={poke.image} alt={poke.name}></img>
-                            {poke.types.map((type) => <p>{type.toUpperCase()}</p>)}
+                            {poke.types.map((type) => <p key={type}>{type.toUpperCase()}</p>)}
                         </CardContent>
                     </Card>)}
             </Grid>

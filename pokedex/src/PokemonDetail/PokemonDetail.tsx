@@ -88,6 +88,7 @@ function PokemonDetail() {
             <p className="capitalize"><b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}</p>
             <p className="capitalize"><b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}</p>
 
+
         </main>
 
     );
