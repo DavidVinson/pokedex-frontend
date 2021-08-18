@@ -81,31 +81,11 @@ function PokemonList() {
 
 
     const getPokemonInfo = async () => {
-
-        // if (!currentPage) {
-        //     const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
-        //     console.log('response', response.data);
-        //     setPokemonList(response.data.data);
-        //     setPokemonData(response.data.links);
-        //     setCurrentPage(response.data.meta.current_page);
-
-        // } 
-
-
-        console.log('use this params', params);
-        //const pageNum = params.pageNum;
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: params.pageNum } });
         console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
-
-
-
-        // const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
-        // setPokemonList(response.data.data);
-        // setPokemonData(response.data.links);
-        // setCurrentPage(response.data.meta.current_page);
 
     }
 
