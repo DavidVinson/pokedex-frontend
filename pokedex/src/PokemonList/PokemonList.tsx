@@ -9,19 +9,7 @@ import Grid from '@material-ui/core/Grid';
 function PokemonList() {
 
 
-    /*
-    const verifyUser = async function(username, password){
-     try {
-         const userInfo = await dataBase.verifyUser(username, password);
-         const rolesInfo = await dataBase.getRoles(userInfo);
-         const logStatus = await dataBase.logAccess(userInfo);
-         return userInfo;
-     }catch (e){
-         //handle errors as needed
-     }
-  };
-  
-  another example:
+    /*  
   let user: User = null;
   try {
     const { data } = await axios.get('/user?ID=12345');
@@ -67,7 +55,6 @@ function PokemonList() {
 
     const history = useHistory();
     const params : UrlParams = useParams();
-    // console.log('params from list page', params);
 
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
@@ -91,20 +78,30 @@ function PokemonList() {
 
 
     const nextPage = async () => {
-        console.log('next page', pokemonData?.next);
-        const response = await axios.get(`${pokemonData?.next}`);
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
+        // console.log('page', pokemonData?.next);
+        try {
+            const response = await axios.get(`${pokemonData?.next}`);
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+    
+        } catch (error) {
+            console.log('next page error', error.response);
+        }
 
     }
 
     const prevPage = async () => {
-        console.log('previous page', pokemonData?.prev);
-        const response = await axios.get(`${pokemonData?.prev}`);
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
+        // console.log('page', pokemonData?.prev);
+        try {
+            const response = await axios.get(`${pokemonData?.prev}`);
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+    
+        } catch (error) {
+            console.log('previous page error', error.response);
+        }
 
     }
 
