@@ -46,7 +46,7 @@ function PokemonList() {
         first: string;
         last: string;
         prev: null | string;
-        next: string
+        next: string;
     }
 
     interface PokemonMetaInterface {
@@ -56,18 +56,22 @@ function PokemonList() {
         path: string;
         per_page: string;
         to: string;
-        total: string
+        total: string;
+    }
+
+    interface UrlParams {
+        name: string | undefined;
+        pageNum: string;
     }
 
 
     const history = useHistory();
-    const params = useParams();
-    // console.log('list page params', params);
+    const params : UrlParams = useParams();
+    // console.log('params from list page', params);
 
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
-    const [searchPath, setSearchPath] = useState<PokemonMetaInterface>();
 
 
     useEffect(() => {
@@ -76,57 +80,57 @@ function PokemonList() {
 
 
     const getPokemonInfo = async () => {
-
-        // if (myCurrentPage) {
-        //     const response = await axios.get(`https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=${myCurrentPage}`);
-        //     console.log('response', response.data);
-        //     setPokemonList(response.data.data);
-        //     setPokemonData(response.data.links);
-        //     setCurrentPage(response.data.meta.current_page);
-
-        // } else {
-        //     const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
-        //     console.log('response', response.data);
-        //     setPokemonList(response.data.data);
-        //     setPokemonData(response.data.links);
-        //     setCurrentPage(response.data.meta.current_page);
-        // }
-
-
-        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon?page=1');
+        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: params.pageNum } });
+        // console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
-        setSearchPath(response.data.meta.path);
 
     }
 
 
     const nextPage = async () => {
-        console.log('next page', pokemonData?.next);
-        const response = await axios.get(`${pokemonData?.next}`);
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
+        // console.log('page', pokemonData?.next);
+        try {
+            const page = String(pokemonData?.next);
+            const strIndex = page.indexOf('=');
+            const pageNum = page.slice(strIndex+1);
+
+            const response = await axios.get(`${pokemonData?.next}`);
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            history.push(`/page/${pageNum}`);
+    
+        } catch (error) {
+            console.log('next page error', error.response);
+        }
 
     }
 
     const prevPage = async () => {
-        console.log('previous page', pokemonData?.prev);
-        const response = await axios.get(`${pokemonData?.prev}`);
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
+        // console.log('page', pokemonData?.prev);
+        try {
+            const page = String(pokemonData?.prev);
+            const strIndex = page.indexOf('=');
+            const pageNum = page.slice(strIndex+1);
+
+            const response = await axios.get(`${pokemonData?.prev}`);
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            history.push(`/page/${pageNum}`);
+
+        } catch (error) {
+            console.log('previous page error', error.response);
+        }
 
     }
 
     async function searchPokedex(event: ChangeEvent<HTMLInputElement>) {
-        console.log('in searchPokedex', event.target.value);
         const pokemonName = event.target.value;
-        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: 1, name: pokemonName} });
-        console.log('search result', response.data);
+        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { name: pokemonName } });
         setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
 
     }
 
@@ -135,7 +139,7 @@ function PokemonList() {
         <main className="main">
 
             <button onClick={prevPage}>previous page</button>
-             
+
             <input type="text" placeholder="Pok&eacute;dex" onChange={(event) => searchPokedex(event)}></input>
 
             <button onClick={nextPage}>next page</button>
@@ -144,7 +148,7 @@ function PokemonList() {
             <Grid container spacing={2}>
                 {pokemonList?.map((poke) =>
                     <Card className="poke-card" variant="outlined" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
-                       <h4>{poke.name}</h4>
+                        <h4>{poke.name}</h4>
                         <CardContent>
                             <img src={poke.image} alt={poke.name}></img>
                             {poke.types.map((type) => <p key={type}>{type.toUpperCase()}</p>)}

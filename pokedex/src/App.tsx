@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PokemonList from './PokemonList/PokemonList';
 import PokemonDetail from './PokemonDetail/PokemonDetail';
 
@@ -13,9 +13,12 @@ function App() {
       <Router>
         <Switch>
 
-          <Route exact path="/">
+          <Redirect exact from="/" to="/page/1" />
+
+          <Route path="/page/:pageNum">
             <PokemonList />
           </Route>
+
 
 
           <Route path="/detail/:currentPage/:pokeID">
