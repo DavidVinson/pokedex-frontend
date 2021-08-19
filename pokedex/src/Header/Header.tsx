@@ -1,11 +1,11 @@
-
+import {Heading} from '@chakra-ui/react';
 
 function Header() {
 
     return (
-        <header className="App-header">
+        <Heading className="App-header">
             <h1>Pok&eacute;dex</h1>
-        </header>
+        </Heading>
 
     );
 }

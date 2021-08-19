@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-
+import {SimpleGrid, Box, Center} from '@chakra-ui/react';
 
 function PokemonList() {
 
@@ -34,7 +31,7 @@ function PokemonList() {
         first: string;
         last: string;
         prev: null | string;
-        next: string
+        next: string;
     }
 
     interface PokemonMetaInterface {
@@ -44,7 +41,7 @@ function PokemonList() {
         path: string;
         per_page: string;
         to: string;
-        total: string
+        total: string;
     }
 
     interface UrlParams {
@@ -61,7 +58,6 @@ function PokemonList() {
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
 
 
-
     useEffect(() => {
         getPokemonInfo();
     }, []);
@@ -69,7 +65,7 @@ function PokemonList() {
 
     const getPokemonInfo = async () => {
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: params.pageNum } });
-        console.log('response', response.data);
+        // console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
@@ -80,10 +76,15 @@ function PokemonList() {
     const nextPage = async () => {
         // console.log('page', pokemonData?.next);
         try {
+            const page = String(pokemonData?.next);
+            const strIndex = page.indexOf('=');
+            const pageNum = page.slice(strIndex+1);
+
             const response = await axios.get(`${pokemonData?.next}`);
             setPokemonList(response.data.data);
             setPokemonData(response.data.links);
             setCurrentPage(response.data.meta.current_page);
+            history.push(`/page/${pageNum}`);
     
         } catch (error) {
             console.log('next page error', error.response);
@@ -94,11 +95,16 @@ function PokemonList() {
     const prevPage = async () => {
         // console.log('page', pokemonData?.prev);
         try {
+            const page = String(pokemonData?.prev);
+            const strIndex = page.indexOf('=');
+            const pageNum = page.slice(strIndex+1);
+
             const response = await axios.get(`${pokemonData?.prev}`);
             setPokemonList(response.data.data);
             setPokemonData(response.data.links);
             setCurrentPage(response.data.meta.current_page);
-    
+            history.push(`/page/${pageNum}`);
+
         } catch (error) {
             console.log('previous page error', error.response);
         }
@@ -109,8 +115,6 @@ function PokemonList() {
         const pokemonName = event.target.value;
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { name: pokemonName } });
         setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
 
     }
 
@@ -125,7 +129,7 @@ function PokemonList() {
             <button onClick={nextPage}>next page</button>
             <p>Page: {currentPage}</p>
 
-            <Grid container spacing={2}>
+            {/* <Grid container spacing={2}>
                 {pokemonList?.map((poke) =>
                     <Card className="poke-card" variant="outlined" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
                         <h4>{poke.name}</h4>
@@ -134,7 +138,19 @@ function PokemonList() {
                             {poke.types.map((type) => <p key={type}>{type.toUpperCase()}</p>)}
                         </CardContent>
                     </Card>)}
-            </Grid>
+            </Grid> */}
+
+            <SimpleGrid columns={{sm: 2, md: 3}} spacing={4}>
+            {pokemonList?.map((poke) =>
+                    <Box bg="white" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
+                        <h4><b>{poke.name}</b></h4>
+                        <Center><img src={poke.image} alt={poke.name}></img></Center>
+                        {poke.types.map((type) => <p key={type}>{type.toUpperCase()}</p>)}
+
+                    </Box>)}
+
+            </SimpleGrid>
+
 
         </main>
 
@@ -142,3 +158,4 @@ function PokemonList() {
 }
 
 export default PokemonList;
+

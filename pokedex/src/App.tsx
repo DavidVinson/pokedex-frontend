@@ -3,6 +3,7 @@ import './App.css';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PokemonList from './PokemonList/PokemonList';
 import PokemonDetail from './PokemonDetail/PokemonDetail';
+import Header from './Header/Header';
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
   return (
 
     <div className="App">
+      <Header />
       <Router>
         <Switch>
 
