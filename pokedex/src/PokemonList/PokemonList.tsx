@@ -46,7 +46,7 @@ function PokemonList() {
         first: string;
         last: string;
         prev: null | string;
-        next: string
+        next: string;
     }
 
     interface PokemonMetaInterface {
@@ -56,7 +56,7 @@ function PokemonList() {
         path: string;
         per_page: string;
         to: string;
-        total: string
+        total: string;
     }
 
     interface UrlParams {
@@ -74,7 +74,6 @@ function PokemonList() {
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
 
 
-
     useEffect(() => {
         getPokemonInfo();
     }, []);
@@ -82,7 +81,7 @@ function PokemonList() {
 
     const getPokemonInfo = async () => {
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { page: params.pageNum } });
-        console.log('response', response.data);
+        // console.log('response', response.data);
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
@@ -91,20 +90,40 @@ function PokemonList() {
 
 
     const nextPage = async () => {
-        console.log('next page', pokemonData?.next);
-        const response = await axios.get(`${pokemonData?.next}`);
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
+        // console.log('page', pokemonData?.next);
+        try {
+            const page = String(pokemonData?.next);
+            const strIndex = page.indexOf('=');
+            const pageNum = page.slice(strIndex+1);
+
+            const response = await axios.get(`${pokemonData?.next}`);
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            history.push(`/page/${pageNum}`);
+    
+        } catch (error) {
+            console.log('next page error', error.response);
+        }
 
     }
 
     const prevPage = async () => {
-        console.log('previous page', pokemonData?.prev);
-        const response = await axios.get(`${pokemonData?.prev}`);
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
+        // console.log('page', pokemonData?.prev);
+        try {
+            const page = String(pokemonData?.prev);
+            const strIndex = page.indexOf('=');
+            const pageNum = page.slice(strIndex+1);
+
+            const response = await axios.get(`${pokemonData?.prev}`);
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            history.push(`/page/${pageNum}`);
+
+        } catch (error) {
+            console.log('previous page error', error.response);
+        }
 
     }
 
@@ -112,8 +131,6 @@ function PokemonList() {
         const pokemonName = event.target.value;
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', { params: { name: pokemonName } });
         setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
 
     }
 

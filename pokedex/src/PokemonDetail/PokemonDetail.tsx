@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-// import Card from '@material-ui/core/Card';
-// import CardHeader from '@material-ui/core/CardHeader';
-// import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 
 
 function PokemonDetail() {
@@ -30,13 +26,6 @@ function PokemonDetail() {
         description: string
     }
 
-    // interface PokemonLinksInterface {
-    //     first: string;
-    //     last: string;
-    //     prev: null | string;
-    //     next: string
-    // }
-
 
     const history = useHistory();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
@@ -47,7 +36,6 @@ function PokemonDetail() {
 
     const getPageDetail = async () => {
         const response = await axios.get(`https://intern-pokedex.myriadapps.com/api/v1/pokemon/${pokeID}`);
-        console.log('pokeDetail', response.data.data);
         setPokemonDetail(response.data.data);
     }
 
@@ -61,7 +49,7 @@ function PokemonDetail() {
         <main>
 
             {/* <Button onClick={() => history.goBack()}>back</Button> */}
-            <Button onClick={() => history.push(`/page/${currentPage}`)}>back</Button>
+            <button onClick={() => history.push(`/page/${currentPage}`)}>back</button>
             <h2>
                 {pokemonDetail?.name} #{pokeID}
             </h2>
