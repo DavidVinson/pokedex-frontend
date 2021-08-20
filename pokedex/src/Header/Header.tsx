@@ -4,7 +4,7 @@ function Header() {
 
     return (
         <Heading className="App-header">
-            <h1>Pok&eacute;dex</h1>
+            <h1>Pokédex</h1>
         </Heading>
 
     );

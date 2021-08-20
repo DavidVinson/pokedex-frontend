@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import {IconButton} from '@chakra-ui/react';
+import {FaArrowCircleLeft} from 'react-icons/fa';
+
 
 
 function PokemonDetail() {
@@ -48,8 +51,8 @@ function PokemonDetail() {
 
         <main>
 
-            {/* <Button onClick={() => history.goBack()}>back</Button> */}
-            <button onClick={() => history.push(`/page/${currentPage}`)}>back</button>
+            <IconButton aria-label="left-arrow" icon={<FaArrowCircleLeft />} isRound={true} size='lg' onClick={() => history.push(`/page/${currentPage}`)}/>
+            {/* <button onClick={() => history.push(`/page/${currentPage}`)}>back</button> */}
             <h2>
                 {pokemonDetail?.name} #{pokeID}
             </h2>
