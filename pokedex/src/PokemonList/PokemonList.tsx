@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { SimpleGrid, Box, Center, IconButton, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { SimpleGrid, Box, Center, IconButton, Input, InputGroup, InputLeftElement, Flex } from '@chakra-ui/react';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { PokemonListInterface, PokemonLinksInterface, PokemonMetaInterface, UrlParams } from 'myTypes';
 
@@ -68,7 +68,7 @@ function PokemonList() {
     }
 
     return (
-        <main className="main">
+        <Flex className="main">
             <InputGroup>
                 <IconButton
                     aria-label="left-arrow"
@@ -113,7 +113,7 @@ function PokemonList() {
                     </Box>
                 ))}
             </SimpleGrid>
-        </main>
+        </Flex>
     );
 }
 

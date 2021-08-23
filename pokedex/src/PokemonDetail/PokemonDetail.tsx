@@ -45,9 +45,8 @@ function PokemonDetail() {
                 {pokemonDetail?.types.map((type) => (
                     <p key={type}>{type.toUpperCase()} </p>
                 ))}
-                <Center>
-                    <img src={pokemonDetail?.image} alt={pokemonDetail?.name} />
-                </Center>
+
+                <img src={pokemonDetail?.image} alt={pokemonDetail?.name} />
 
                 <p>HP {pokemonDetail?.stats.hp}</p>
                 <p>Attack {pokemonDetail?.stats.attack}</p>
