@@ -1,11 +1,13 @@
+import {Heading} from '@chakra-ui/react';
+import {HeaderPropsInterface} from 'myTypes';
 
 
-function Header() {
+function Header({title}: HeaderPropsInterface) {
 
     return (
-        <header className="App-header">
-            <h1>Pok&eacute;dex</h1>
-        </header>
+        <Heading as="h1" alignItems="center">
+            {title}
+        </Heading>
 
     );
 }
