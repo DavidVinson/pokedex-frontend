@@ -1,10 +1,12 @@
 import {Heading} from '@chakra-ui/react';
+import {HeaderPropsInterface} from 'myTypes';
 
-function Header() {
+
+function Header({title}: HeaderPropsInterface) {
 
     return (
-        <Heading className="App-header">
-            <h1>Pokédex</h1>
+        <Heading as="h1" alignItems="center">
+            {title}
         </Heading>
 
     );
