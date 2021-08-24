@@ -2,9 +2,20 @@ import React from 'react';
 import axios from 'axios';
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { SimpleGrid, Box, Center, IconButton, Input, InputGroup, InputLeftElement, Flex } from '@chakra-ui/react';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import { PokemonListInterface, PokemonLinksInterface, PokemonMetaInterface, UrlParams } from 'myTypes';
+import {
+    SimpleGrid,
+    Box,
+    Center,
+    IconButton,
+    Input,
+    InputGroup,
+    InputLeftElement,
+    Flex,
+    Spacer,
+    Container,
+} from '@chakra-ui/react';
 
 function PokemonList() {
     const history = useHistory();
@@ -68,8 +79,8 @@ function PokemonList() {
     }
 
     return (
-        <Flex className="main">
-            <InputGroup>
+        <Container className="main">
+            <Flex padding="15px">
                 <IconButton
                     aria-label="left-arrow"
                     icon={<FaArrowLeft color="white" />}
@@ -78,13 +89,16 @@ function PokemonList() {
                     bgColor="teal.500"
                     onClick={prevPage}
                 />
+                <Spacer />
 
-                <InputGroup>
+                <InputGroup paddingLeft="10px" paddingRight="10px">
                     <InputLeftElement pointerEvents="none">
                         <FaSearch color="white" />
                     </InputLeftElement>
                     <Input type="text" size="lg" placeholder="Pokédex" onChange={(event) => searchPokedex(event)} />
                 </InputGroup>
+
+                <Spacer />
 
                 <IconButton
                     aria-label="right-arrow"
@@ -94,9 +108,7 @@ function PokemonList() {
                     bgColor="teal.500"
                     onClick={nextPage}
                 />
-            </InputGroup>
-
-            <p>Page: {currentPage}</p>
+            </Flex>
 
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
                 {pokemonList?.map((poke) => (
@@ -113,7 +125,7 @@ function PokemonList() {
                     </Box>
                 ))}
             </SimpleGrid>
-        </Flex>
+        </Container>
     );
 }
 
