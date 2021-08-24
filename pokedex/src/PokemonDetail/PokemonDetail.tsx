@@ -2,10 +2,22 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { IconButton, InputGroup, Center, Flex } from '@chakra-ui/react';
+import {
+    IconButton,
+    InputGroup,
+    Center,
+    Flex,
+    Spacer,
+    Container,
+    Badge,
+    Divider,
+    Box,
+    Heading,
+    Image,
+} from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
-import Header from '../Header/Header';
 import { PokemonDetailInterface } from 'myTypes';
+import { teal } from '@material-ui/core/colors';
 
 function PokemonDetail() {
     const history = useHistory();
@@ -24,61 +36,81 @@ function PokemonDetail() {
     }, []);
 
     return (
-        <Flex className="profile">
-            <Flex>
+        <Container className="main-detail">
+            <Flex paddingBottom="5px">
                 <IconButton
                     aria-label="left-arrow"
-                    icon={<FaArrowLeft color="white" />}
+                    icon={<FaArrowLeft color="lightseagreen" />}
                     isRound={true}
                     size="lg"
-                    bgColor="teal.500"
+                    bgColor="white"
                     onClick={() => history.push(`/page/${currentPage}`)}
                 />
-                <Header title={pokemonDetail?.name ? pokemonDetail.name : 'na'} />
+                <Spacer />
+                <Heading className="main-heading" as="h1">
+                    {pokemonDetail?.name}
+                </Heading>
             </Flex>
 
-            <Flex>
-                <h2>
-                    {pokemonDetail?.name} #{pokeID}
-                </h2>
+            <Container className="profile-content-bg">
+                <Flex>
+                    <h2>
+                        <b>{pokemonDetail?.name}</b> #{pokeID}
+                    </h2>
+                    <Spacer />
+                    {pokemonDetail?.types.map((type) => (
+                        <Badge key={type} variant="outline" marginTop="5px" marginLeft="5px">
+                            {type.toUpperCase()}{' '}
+                        </Badge>
+                    ))}
+                </Flex>
+                <Divider paddingTop="10px" />
 
-                {pokemonDetail?.types.map((type) => (
-                    <p key={type}>{type.toUpperCase()} </p>
-                ))}
+                <Flex>
+                    <Flex>
+                        <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+                    </Flex>
+                    <Spacer />
+                    <Box>
+                        <p>HP {pokemonDetail?.stats.hp}</p>
+                        <p>Attack {pokemonDetail?.stats.attack}</p>
+                        <p>Defense {pokemonDetail?.stats.defense}</p>
+                        <p>Speed {pokemonDetail?.stats.speed}</p>
+                        <p>Sp Atk {pokemonDetail?.stats['special-attack']}</p>
+                        <p>Sp Def {pokemonDetail?.stats['special-defense']}</p>
+                    </Box>
+                </Flex>
+                <Flex textAlign="left">
+                    <p>
+                        <b>{pokemonDetail?.genus}</b>
+                    </p>
+                </Flex>
 
-                <img src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+                <Flex textAlign="left">
+                    <p>{pokemonDetail?.description}</p>
+                </Flex>
 
-                <p>HP {pokemonDetail?.stats.hp}</p>
-                <p>Attack {pokemonDetail?.stats.attack}</p>
-                <p>Defense {pokemonDetail?.stats.defense}</p>
-                <p>Speed {pokemonDetail?.stats.speed}</p>
-                <p>Sp Atk {pokemonDetail?.stats['special-attack']}</p>
-                <p>Sp Def {pokemonDetail?.stats['special-defense']}</p>
-
-                <p>
-                    <b>{pokemonDetail?.genus}</b>
-                </p>
-                <p>{pokemonDetail?.description}</p>
-
-                <div className="profile">
+                <Flex className="profile-detail-heading" marginTop="15px" marginBottom="15px">
                     <h4>
                         <b>Profile</b>
                     </h4>
-                </div>
-                <p>
-                    <b>Height:</b> {pokemonDetail?.height} m
-                </p>
-                <p>
-                    <b>Weight:</b> {pokemonDetail?.weight}
-                </p>
-                <p className="capitalize">
-                    <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
-                </p>
-                <p className="capitalize">
-                    <b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
-                </p>
-            </Flex>
-        </Flex>
+                </Flex>
+                <Box textAlign="left" paddingLeft="10px" paddingBottom="15px">
+                    <Box padding="5px">
+                        <b>Height:</b> {pokemonDetail?.height} m
+                    </Box>
+                    <Box padding="5px">
+                        <b>Weight:</b> {pokemonDetail?.weight} kg
+                    </Box>
+                    <Box className="capitalize" padding="5px">
+                        <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
+                    </Box>
+                    <Box className="capitalize" padding="5px">
+                        <b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
+                    </Box>
+                </Box>
+            </Container>
+        </Container>
     );
 }
 

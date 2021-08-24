@@ -15,6 +15,10 @@ import {
     Flex,
     Spacer,
     Container,
+    Divider,
+    Heading,
+    Badge,
+    Image,
 } from '@chakra-ui/react';
 
 function PokemonList() {
@@ -113,14 +117,18 @@ function PokemonList() {
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
                 {pokemonList?.map((poke) => (
                     <Box bg="white" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
-                        <h4>
+                        <Heading size="sm" textAlign="left" padding="5px">
                             <b>{poke.name}</b>
-                        </h4>
+                        </Heading>
+                        <Divider />
+
                         <Center>
-                            <img src={poke.image} alt={poke.name}></img>
+                            <Image src={poke.image} alt={poke.name} />
                         </Center>
                         {poke.types.map((type) => (
-                            <p key={type}>{type.toUpperCase()}</p>
+                            <Badge key={type} margin="5px">
+                                {type.toUpperCase()}
+                            </Badge>
                         ))}
                     </Box>
                 ))}
