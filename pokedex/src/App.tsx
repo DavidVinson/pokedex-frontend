@@ -6,7 +6,7 @@ import PokemonDetail from './PokemonDetail/PokemonDetail';
 
 function App() {
     return (
-        <div className="App">
+        <div className="App-main">
             <Router>
                 <Switch>
                     <Redirect exact from="/" to="/page/1" />

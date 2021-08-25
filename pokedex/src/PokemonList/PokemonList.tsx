@@ -16,7 +16,6 @@ import {
     Spacer,
     Container,
     Divider,
-    Heading,
     Badge,
     Image,
 } from '@chakra-ui/react';
@@ -74,13 +73,13 @@ function PokemonList() {
         }
     };
 
-    async function searchPokedex(event: ChangeEvent<HTMLInputElement>) {
+    const searchPokedex = async (event: ChangeEvent<HTMLInputElement>) => {
         const pokemonName = event.target.value;
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
             params: { name: pokemonName },
         });
         setPokemonList(response.data.data);
-    }
+    };
 
     return (
         <Container className="main">
@@ -96,7 +95,7 @@ function PokemonList() {
                 <Spacer />
 
                 <InputGroup paddingLeft="10px" paddingRight="10px">
-                    <InputLeftElement pointerEvents="none">
+                    <InputLeftElement pointerEvents="none" paddingLeft="10px" paddingTop="5px">
                         <FaSearch color="white" />
                     </InputLeftElement>
                     <Input type="text" size="lg" placeholder="Pokédex" onChange={(event) => searchPokedex(event)} />
@@ -116,17 +115,22 @@ function PokemonList() {
 
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
                 {pokemonList?.map((poke) => (
-                    <Box bg="white" key={poke.id} onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}>
-                        <Heading size="sm" textAlign="left" padding="5px">
+                    <Box
+                        bg="white"
+                        borderRadius="sm"
+                        key={poke.id}
+                        onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
+                    >
+                        <Box textAlign="left" padding="5px">
                             <b>{poke.name}</b>
-                        </Heading>
+                        </Box>
                         <Divider />
 
                         <Center>
                             <Image src={poke.image} alt={poke.name} />
                         </Center>
                         {poke.types.map((type) => (
-                            <Badge key={type} margin="5px">
+                            <Badge borderRadius="md" key={type} margin="5px">
                                 {type.toUpperCase()}
                             </Badge>
                         ))}

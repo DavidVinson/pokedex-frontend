@@ -4,24 +4,24 @@ declare module 'myTypes' {
     }
 
     interface PokemonDetailInterface {
-        id: string,
-        name: string,
-        image: string,
-        types: string[],
-        height: string,
-        weight: string,
-        abilities: string[],
-        egg_groups: string[],
+        id: string;
+        name: string;
+        image: string;
+        types: string[];
+        height: string;
+        weight: string;
+        abilities: string[];
+        egg_groups: string[];
         stats: {
-            hp: string,
-            speed: string,
-            attack: string,
-            defense: string,
-            "special-attack": string,
-            "special-defense": string,
-        },
-        genus: string,
-        description: string
+            hp: string;
+            speed: string;
+            attack: string;
+            defense: string;
+            'special-attack': string;
+            'special-defense': string;
+        };
+        genus: string;
+        description: string;
     }
 
     interface PokemonListInterface {
@@ -52,10 +52,7 @@ declare module 'myTypes' {
         name: string | undefined;
         pageNum: string;
     }
-
-
 }
-
 
 module.exports = {
     HeaderPropsInterface,
@@ -64,4 +61,4 @@ module.exports = {
     PokemonLinksInterface,
     PokemonMetaInterface,
     UrlParams,
-}
+};

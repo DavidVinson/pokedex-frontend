@@ -17,7 +17,12 @@ import {
 } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'myTypes';
-import { teal } from '@material-ui/core/colors';
+import styled from '@emotion/styled';
+
+const ProfileStat = styled.div`
+    text-transform: capitalize;
+    padding: 5px;
+`;
 
 function PokemonDetail() {
     const history = useHistory();
@@ -36,8 +41,8 @@ function PokemonDetail() {
     }, []);
 
     return (
-        <Container className="main-detail">
-            <Flex paddingBottom="5px">
+        <Container>
+            <Flex paddingBottom="5px" color="red.700">
                 <IconButton
                     aria-label="left-arrow"
                     icon={<FaArrowLeft color="lightseagreen" />}
@@ -95,7 +100,7 @@ function PokemonDetail() {
                         <b>Profile</b>
                     </h4>
                 </Flex>
-                <Box textAlign="left" paddingLeft="10px" paddingBottom="15px">
+                <Flex textAlign="left" paddingBottom="15px">
                     <Box padding="5px">
                         <b>Height:</b> {pokemonDetail?.height} m
                     </Box>
@@ -105,10 +110,12 @@ function PokemonDetail() {
                     <Box className="capitalize" padding="5px">
                         <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
                     </Box>
-                    <Box className="capitalize" padding="5px">
+                </Flex>
+                <Flex>
+                    <ProfileStat>
                         <b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
-                    </Box>
-                </Box>
+                    </ProfileStat>
+                </Flex>
             </Container>
         </Container>
     );
