@@ -43,11 +43,6 @@
   text-align: center;
 }
 
-
-.profile-content-bg {
-  background-color: white;
-}
-
 .profile-detail-heading {
   background-color: lightseagreen;
   color: white;
@@ -59,12 +54,9 @@
 
 }
 
-.capitalize {
-  text-transform: capitalize;
-}
 
-Input::placeholder {
+/* Input::placeholder {
   text-align: center;
   color: white;
-}
+} */
 

@@ -2,19 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import {
-    IconButton,
-    InputGroup,
-    Center,
-    Flex,
-    Spacer,
-    Container,
-    Badge,
-    Divider,
-    Box,
-    Heading,
-    Image,
-} from '@chakra-ui/react';
+import { IconButton, Flex, Spacer, Container, Divider, Box, Heading, Image } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'myTypes';
 import styled from '@emotion/styled';
@@ -42,7 +30,7 @@ function PokemonDetail() {
 
     return (
         <Container>
-            <Flex paddingBottom="5px" color="red.700">
+            <Flex paddingBottom="25px" color="red.700">
                 <IconButton
                     aria-label="left-arrow"
                     icon={<FaArrowLeft color="lightseagreen" />}
@@ -52,21 +40,37 @@ function PokemonDetail() {
                     onClick={() => history.push(`/page/${currentPage}`)}
                 />
                 <Spacer />
-                <Heading className="main-heading" as="h1">
+                <Heading color="white" as="h1" textAlign="center">
                     {pokemonDetail?.name}
                 </Heading>
+                <Spacer />
             </Flex>
 
-            <Container className="profile-content-bg">
+            <Container bg="white">
                 <Flex>
-                    <h2>
+                    <Box paddingTop="5px">
                         <b>{pokemonDetail?.name}</b> #{pokeID}
-                    </h2>
+                    </Box>
                     <Spacer />
                     {pokemonDetail?.types.map((type) => (
-                        <Badge key={type} variant="outline" marginTop="5px" marginLeft="5px">
-                            {type.toUpperCase()}{' '}
-                        </Badge>
+                        <Box
+                            key={type}
+                            marginTop="5px"
+                            marginLeft="5px"
+                            borderRadius="md"
+                            color={`types.${type}.font`}
+                            bgColor={`types.${type}.bg`}
+                            borderColor={`types.${type}.border`}
+                            border="1px solid"
+                            width="fit-content"
+                            textAlign="center"
+                            minW="50px"
+                            padding="5px"
+                            lineHeight="8px"
+                            fontSize="8px"
+                        >
+                            {type.toUpperCase()}
+                        </Box>
                     ))}
                 </Flex>
                 <Divider paddingTop="10px" />

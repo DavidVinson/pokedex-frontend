@@ -16,7 +16,6 @@ import {
     Spacer,
     Container,
     Divider,
-    Badge,
     Image,
 } from '@chakra-ui/react';
 
@@ -82,7 +81,7 @@ function PokemonList() {
     };
 
     return (
-        <Container className="main">
+        <Container height="100%">
             <Flex padding="15px">
                 <IconButton
                     aria-label="left-arrow"
@@ -98,7 +97,14 @@ function PokemonList() {
                     <InputLeftElement pointerEvents="none" paddingLeft="10px" paddingTop="5px">
                         <FaSearch color="white" />
                     </InputLeftElement>
-                    <Input type="text" size="lg" placeholder="Pokédex" onChange={(event) => searchPokedex(event)} />
+                    <Input
+                        color="teal.800"
+                        type="text"
+                        size="lg"
+                        placeholder="Pokédex"
+                        _placeholder={{ color: 'white', textAlign: 'center' }}
+                        onChange={(event) => searchPokedex(event)}
+                    />
                 </InputGroup>
 
                 <Spacer />
@@ -116,9 +122,14 @@ function PokemonList() {
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
                 {pokemonList?.map((poke) => (
                     <Box
+                        key={poke.id}
+                        cursor="pointer"
+                        _hover={{
+                            scale: '1.1',
+                            backgroundColor: 'black',
+                        }}
                         bg="white"
                         borderRadius="sm"
-                        key={poke.id}
                         onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
                     >
                         <Box textAlign="left" padding="5px">
@@ -130,16 +141,23 @@ function PokemonList() {
                             <Image src={poke.image} alt={poke.name} />
                         </Center>
                         {poke.types.map((type) => (
-                            <Badge
-                                variant="outline"
-                                borderRadius="md"
+                            <Box
                                 key={type}
-                                margin="5px"
-                                color={`types.${type}`}
-                                bgColor="green"
+                                borderRadius="md"
+                                color={`types.${type}.font`}
+                                bgColor={`types.${type}.bg`}
+                                borderColor={`types.${type}.border`}
+                                border="1px solid"
+                                width="fit-content"
+                                textAlign="center"
+                                minW="50px"
+                                padding="5px"
+                                lineHeight="8px"
+                                fontSize="8px"
+                                display="inline-flex"
                             >
                                 {type.toUpperCase()}
-                            </Badge>
+                            </Box>
                         ))}
                     </Box>
                 ))}
