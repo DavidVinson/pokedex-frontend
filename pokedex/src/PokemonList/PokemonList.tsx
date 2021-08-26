@@ -130,7 +130,14 @@ function PokemonList() {
                             <Image src={poke.image} alt={poke.name} />
                         </Center>
                         {poke.types.map((type) => (
-                            <Badge borderRadius="md" key={type} margin="5px">
+                            <Badge
+                                variant="outline"
+                                borderRadius="md"
+                                key={type}
+                                margin="5px"
+                                color={`types.${type}`}
+                                bgColor="green"
+                            >
                                 {type.toUpperCase()}
                             </Badge>
                         ))}
