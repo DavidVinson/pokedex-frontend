@@ -52,26 +52,30 @@ function PokemonDetail() {
                         <b>{pokemonDetail?.name}</b> #{pokeID}
                     </Box>
                     <Spacer />
-                    {pokemonDetail?.types.map((type) => (
-                        <Box
-                            key={type}
-                            marginTop="5px"
-                            marginLeft="5px"
-                            borderRadius="md"
-                            color={`types.${type}.font`}
-                            bgColor={`types.${type}.bg`}
-                            borderColor={`types.${type}.border`}
-                            border="1px solid"
-                            width="fit-content"
-                            textAlign="center"
-                            minW="50px"
-                            padding="5px"
-                            lineHeight="8px"
-                            fontSize="8px"
-                        >
-                            {type.toUpperCase()}
-                        </Box>
-                    ))}
+                    <Box>
+                        {pokemonDetail?.types.map((type) => (
+                            <Box
+                                key={type}
+                                padding="5px"
+                                marginTop="5px"
+                                marginLeft="5px"
+                                borderRadius="md"
+                                color={`types.${type}.font`}
+                                bgColor={`types.${type}.bg`}
+                                borderColor={`types.${type}.border`}
+                                border="1px solid"
+                                width="fit-content"
+                                textAlign="center"
+                                minW="50px"
+                                display="inline-flex"
+                                lineHeight="8px"
+                                fontSize="8px"
+                                textTransform="uppercase"
+                            >
+                                {type}
+                            </Box>
+                        ))}
+                    </Box>
                 </Flex>
                 <Divider paddingTop="10px" />
 

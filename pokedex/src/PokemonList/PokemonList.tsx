@@ -12,11 +12,13 @@ import {
     Input,
     InputGroup,
     InputLeftElement,
+    InputRightElement,
     Flex,
     Spacer,
     Container,
     Divider,
     Image,
+    CloseButton,
 } from '@chakra-ui/react';
 
 function PokemonList() {
@@ -26,6 +28,8 @@ function PokemonList() {
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
+    const [lastPage, setLastPage] = useState<PokemonMetaInterface>();
+    const [pokemonNameSearch, setPokemonNameSearch] = useState('');
 
     useEffect(() => {
         getPokemonInfo();
@@ -38,6 +42,7 @@ function PokemonList() {
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
+        setLastPage(response.data.meta.last_page);
     };
 
     const nextPage = async () => {
@@ -73,16 +78,22 @@ function PokemonList() {
     };
 
     const searchPokedex = async (event: ChangeEvent<HTMLInputElement>) => {
-        const pokemonName = event.target.value;
+        // const pokemonNameSearch = event.target.value;
+        setPokemonNameSearch(event.target.value);
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
-            params: { name: pokemonName },
+            params: { name: pokemonNameSearch },
         });
         setPokemonList(response.data.data);
     };
 
+    const onCloseSearch = () => {
+        setPokemonNameSearch('');
+        getPokemonInfo();
+    };
+
     return (
         <Container height="100%">
-            <Flex padding="15px">
+            <Flex paddingTop="15px" paddingBottom="15px">
                 <IconButton
                     aria-label="left-arrow"
                     icon={<FaArrowLeft color="white" />}
@@ -101,22 +112,28 @@ function PokemonList() {
                         color="teal.800"
                         type="text"
                         size="lg"
+                        value={pokemonNameSearch}
                         placeholder="Pokédex"
                         _placeholder={{ color: 'white', textAlign: 'center' }}
                         onChange={(event) => searchPokedex(event)}
                     />
+                    <InputRightElement paddingRight="10px" paddingTop="5px" marginRight="5px">
+                        {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
+                    </InputRightElement>
                 </InputGroup>
 
                 <Spacer />
 
-                <IconButton
-                    aria-label="right-arrow"
-                    icon={<FaArrowRight color="white" />}
-                    isRound={true}
-                    size="lg"
-                    bgColor="teal.500"
-                    onClick={nextPage}
-                />
+                {currentPage !== lastPage && (
+                    <IconButton
+                        aria-label="right-arrow"
+                        icon={<FaArrowRight color="white" />}
+                        isRound={true}
+                        size="lg"
+                        bgColor="teal.500"
+                        onClick={nextPage}
+                    />
+                )}
             </Flex>
 
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
@@ -125,7 +142,8 @@ function PokemonList() {
                         key={poke.id}
                         cursor="pointer"
                         _hover={{
-                            scale: '1.1',
+                            // scale: '1.1',
+                            scrollSnapMarginLeft: '3',
                             backgroundColor: 'black',
                         }}
                         bg="white"
@@ -140,25 +158,29 @@ function PokemonList() {
                         <Center>
                             <Image src={poke.image} alt={poke.name} />
                         </Center>
-                        {poke.types.map((type) => (
-                            <Box
-                                key={type}
-                                borderRadius="md"
-                                color={`types.${type}.font`}
-                                bgColor={`types.${type}.bg`}
-                                borderColor={`types.${type}.border`}
-                                border="1px solid"
-                                width="fit-content"
-                                textAlign="center"
-                                minW="50px"
-                                padding="5px"
-                                lineHeight="8px"
-                                fontSize="8px"
-                                display="inline-flex"
-                            >
-                                {type.toUpperCase()}
-                            </Box>
-                        ))}
+                        <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
+                            {poke.types.map((type) => (
+                                <Box
+                                    key={type}
+                                    borderRadius="md"
+                                    color={`types.${type}.font`}
+                                    bgColor={`types.${type}.bg`}
+                                    borderColor={`types.${type}.border`}
+                                    border="1px solid"
+                                    width="fit-content"
+                                    textAlign="center"
+                                    minW="50px"
+                                    padding="5px"
+                                    lineHeight="8px"
+                                    fontSize="8px"
+                                    display="inline-flex"
+                                    marginLeft="5px"
+                                    textTransform="uppercase"
+                                >
+                                    {type}
+                                </Box>
+                            ))}
+                        </Box>
                     </Box>
                 ))}
             </SimpleGrid>
