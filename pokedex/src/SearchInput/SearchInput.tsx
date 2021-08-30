@@ -1,9 +1,10 @@
-import {ChangeEvent, useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import Input from '@chakra-ui/react';
 
 function SearchInput() {
-
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState('');
     const history = useHistory();
 
     function onChange(e: ChangeEvent<HTMLInputElement>) {
@@ -13,18 +14,15 @@ function SearchInput() {
     useEffect(() => {
         const params = new URLSearchParams();
         if (query) {
-            params.append("name", query);
+            params.append('name', query);
         } else {
-            params.delete("name");
+            params.delete('name');
         }
 
-        history.push({search: params.toString()})
-    }, [query, history])
+        history.push({ search: params.toString() });
+    }, [query, history]);
 
-    return (
-
-        <input type="text" placeholder="Search Pok&eacute;dex" value={query} onChange={onChange} />
-    );
+    return <input type="text" placeholder="Search Pokédex" value={query} onChange={onChange} />;
 }
 
 export default SearchInput;
