@@ -29,6 +29,7 @@ function PokemonList() {
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
     const [lastPage, setLastPage] = useState<PokemonMetaInterface>();
+    const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
 
     useEffect(() => {
@@ -43,37 +44,82 @@ function PokemonList() {
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
         setLastPage(response.data.meta.last_page);
+        // getStartPage();
     };
 
     const nextPage = async () => {
-        try {
-            const page = String(pokemonData?.next);
-            const strIndex = page.indexOf('=');
-            const pageNum = page.slice(strIndex + 1);
+        if (pokemonNameSearch) {
+            console.log('next page search name=', pokemonNameSearch);
+            console.log('the current page', currentPage);
+            try {
+                const page = String(pokemonData?.next);
+                const strIndex = page.indexOf('=');
+                const pageNum = page.slice(strIndex + 1);
+                console.log('pageNum', pageNum);
 
-            const response = await axios.get(`${pokemonData?.next}`);
-            setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
-            history.push(`/page/${pageNum}`);
-        } catch (error) {
-            console.log('next page error', error.response);
+                const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
+                    params: { name: pokemonNameSearch, page: pageNum },
+                });
+                console.log('search response', response.data);
+
+                setPokemonList(response.data.data);
+                setPokemonData(response.data.links);
+                setCurrentPage(response.data.meta.current_page);
+                history.push(`/page/${pageNum}`);
+            } catch (error) {
+                console.log('next page error', error.response);
+            }
+        } else {
+            try {
+                const page = String(pokemonData?.next);
+                const strIndex = page.indexOf('=');
+                const pageNum = page.slice(strIndex + 1);
+
+                const response = await axios.get(`${pokemonData?.next}`);
+                setPokemonList(response.data.data);
+                setPokemonData(response.data.links);
+                setCurrentPage(response.data.meta.current_page);
+                history.push(`/page/${pageNum}`);
+            } catch (error) {
+                console.log('next page error', error.response);
+            }
         }
     };
 
     const prevPage = async () => {
-        try {
-            const page = String(pokemonData?.prev);
-            const strIndex = page.indexOf('=');
-            const pageNum = page.slice(strIndex + 1);
+        if (pokemonNameSearch) {
+            console.log('searching previous page...', pokemonNameSearch);
+            try {
+                const page = String(pokemonData?.prev);
+                const strIndex = page.indexOf('=');
+                const pageNum = page.slice(strIndex + 1);
 
-            const response = await axios.get(`${pokemonData?.prev}`);
-            setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
-            history.push(`/page/${pageNum}`);
-        } catch (error) {
-            console.log('previous page error', error.response);
+                const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
+                    params: { name: pokemonNameSearch, page: pageNum },
+                });
+                console.log('search response', response.data);
+
+                setPokemonList(response.data.data);
+                setPokemonData(response.data.links);
+                setCurrentPage(response.data.meta.current_page);
+                history.push(`/page/${pageNum}`);
+            } catch (error) {
+                console.log('previous page error', error.response);
+            }
+        } else {
+            try {
+                const page = String(pokemonData?.prev);
+                const strIndex = page.indexOf('=');
+                const pageNum = page.slice(strIndex + 1);
+
+                const response = await axios.get(`${pokemonData?.prev}`);
+                setPokemonList(response.data.data);
+                setPokemonData(response.data.links);
+                setCurrentPage(response.data.meta.current_page);
+                history.push(`/page/${pageNum}`);
+            } catch (error) {
+                console.log('previous page error', error.response);
+            }
         }
     };
 
@@ -83,7 +129,13 @@ function PokemonList() {
         const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
             params: { name: pokemonNameSearch },
         });
+        console.log('response search data', response.data);
+
+        setCurrentPage(response.data.meta.current_page);
+        console.log('search current page', currentPage);
+
         setPokemonList(response.data.data);
+        setPokemonData(response.data.links);
     };
 
     const onCloseSearch = () => {
@@ -91,17 +143,24 @@ function PokemonList() {
         getPokemonInfo();
     };
 
+    const getStartPage = () => {
+        const firstPage = Number(lastPage) / Number(lastPage);
+        setStartPage(String(firstPage));
+    };
+
     return (
         <Container height="100%">
             <Flex paddingTop="15px" paddingBottom="15px">
-                <IconButton
-                    aria-label="left-arrow"
-                    icon={<FaArrowLeft color="white" />}
-                    isRound={true}
-                    size="lg"
-                    bgColor="teal.500"
-                    onClick={prevPage}
-                />
+                {startPage !== params.pageNum && (
+                    <IconButton
+                        aria-label="left-arrow"
+                        icon={<FaArrowLeft color="white" />}
+                        isRound={true}
+                        size="lg"
+                        bgColor="teal.500"
+                        onClick={prevPage}
+                    />
+                )}
                 <Spacer />
 
                 <InputGroup paddingLeft="10px" paddingRight="10px">

@@ -7,6 +7,17 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'myTypes';
 import styled from '@emotion/styled';
 
+const ProfileHeading = styled.div`
+    background-color: lightseagreen;
+    color: white;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    width: 100%;
+`;
+
 const ProfileStat = styled.div`
     text-transform: capitalize;
     padding: 5px;
@@ -103,10 +114,12 @@ function PokemonDetail() {
                     <p>{pokemonDetail?.description}</p>
                 </Flex>
 
-                <Flex className="profile-detail-heading" marginTop="15px" marginBottom="15px">
-                    <h4>
-                        <b>Profile</b>
-                    </h4>
+                <Flex marginTop="15px" marginBottom="15px">
+                    <ProfileHeading>
+                        <h4>
+                            <b>Profile</b>
+                        </h4>
+                    </ProfileHeading>
                 </Flex>
                 <Flex textAlign="left" paddingBottom="15px">
                     <Box padding="5px">
@@ -115,14 +128,18 @@ function PokemonDetail() {
                     <Box padding="5px">
                         <b>Weight:</b> {pokemonDetail?.weight} kg
                     </Box>
-                    <Box className="capitalize" padding="5px">
-                        <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
+                    <Box>
+                        <ProfileStat>
+                            <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
+                        </ProfileStat>
                     </Box>
                 </Flex>
-                <Flex>
-                    <ProfileStat>
-                        <b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
-                    </ProfileStat>
+                <Flex paddingBottom="15px">
+                    <Box>
+                        <ProfileStat>
+                            <b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
+                        </ProfileStat>
+                    </Box>
                 </Flex>
             </Container>
         </Container>
