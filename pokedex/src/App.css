@@ -10,17 +10,6 @@
   color: white;
 }
 
-/* .App-main {
-  background-color: lightseagreen;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-
-} */
-
 .App-main {
   background-color: lightseagreen;
   padding-top: 20px;
@@ -44,8 +33,5 @@
 }
 
 
-/* Input::placeholder {
-  text-align: center;
-  color: white;
-} */
+
 

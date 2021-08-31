@@ -1,9 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import { PokemonListInterface, PokemonLinksInterface, PokemonMetaInterface, UrlParams } from 'myTypes';
+import {
+    PokemonListInterface,
+    PokemonLinksInterface,
+    PokemonMetaInterface,
+    UrlParams,
+    ApiPropsInterface,
+} from 'myTypes';
 import {
     SimpleGrid,
     Box,
@@ -19,9 +25,11 @@ import {
     Divider,
     Image,
     CloseButton,
+    FormControl,
 } from '@chakra-ui/react';
 
-function PokemonList() {
+function PokemonList(props: ApiPropsInterface) {
+    const pokedexApi = props.pokedexApiV1;
     const history = useHistory();
     const params: UrlParams = useParams();
 
@@ -37,37 +45,32 @@ function PokemonList() {
     }, []);
 
     const getPokemonInfo = async () => {
-        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
+        const response = await axios.get(pokedexApi, {
             params: { page: params.pageNum },
         });
         setPokemonList(response.data.data);
         setPokemonData(response.data.links);
         setCurrentPage(response.data.meta.current_page);
         setLastPage(response.data.meta.last_page);
-        // getStartPage();
     };
 
     const nextPage = async () => {
         if (pokemonNameSearch) {
-            console.log('next page search name=', pokemonNameSearch);
-            console.log('the current page', currentPage);
             try {
                 const page = String(pokemonData?.next);
                 const strIndex = page.indexOf('=');
                 const pageNum = page.slice(strIndex + 1);
-                console.log('pageNum', pageNum);
 
-                const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
+                const response = await axios.get(pokedexApi, {
                     params: { name: pokemonNameSearch, page: pageNum },
                 });
-                console.log('search response', response.data);
 
                 setPokemonList(response.data.data);
                 setPokemonData(response.data.links);
                 setCurrentPage(response.data.meta.current_page);
                 history.push(`/page/${pageNum}`);
             } catch (error) {
-                console.log('next page error', error.response);
+                console.log('next page search error', error.response);
             }
         } else {
             try {
@@ -88,23 +91,21 @@ function PokemonList() {
 
     const prevPage = async () => {
         if (pokemonNameSearch) {
-            console.log('searching previous page...', pokemonNameSearch);
             try {
                 const page = String(pokemonData?.prev);
                 const strIndex = page.indexOf('=');
                 const pageNum = page.slice(strIndex + 1);
 
-                const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
+                const response = await axios.get(pokedexApi, {
                     params: { name: pokemonNameSearch, page: pageNum },
                 });
-                console.log('search response', response.data);
 
                 setPokemonList(response.data.data);
                 setPokemonData(response.data.links);
                 setCurrentPage(response.data.meta.current_page);
                 history.push(`/page/${pageNum}`);
             } catch (error) {
-                console.log('previous page error', error.response);
+                console.log('previous page search error', error.response);
             }
         } else {
             try {
@@ -123,29 +124,23 @@ function PokemonList() {
         }
     };
 
-    const searchPokedex = async (event: ChangeEvent<HTMLInputElement>) => {
-        // const pokemonNameSearch = event.target.value;
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setPokemonNameSearch(event.target.value);
-        const response = await axios.get('https://intern-pokedex.myriadapps.com/api/v1/pokemon', {
-            params: { name: pokemonNameSearch },
-        });
-        console.log('response search data', response.data);
+    };
 
-        setCurrentPage(response.data.meta.current_page);
-        console.log('search current page', currentPage);
-
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
+    const submitSearch = async (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            const response = await axios.get(pokedexApi, {
+                params: { name: pokemonNameSearch },
+            });
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+        }
     };
 
     const onCloseSearch = () => {
         setPokemonNameSearch('');
         getPokemonInfo();
-    };
-
-    const getStartPage = () => {
-        const firstPage = Number(lastPage) / Number(lastPage);
-        setStartPage(String(firstPage));
     };
 
     return (
@@ -162,24 +157,27 @@ function PokemonList() {
                     />
                 )}
                 <Spacer />
+                <FormControl id="text">
+                    <InputGroup paddingLeft="10px" paddingRight="10px">
+                        <InputLeftElement pointerEvents="none" paddingLeft="10px" paddingTop="5px">
+                            <FaSearch color="white" />
+                        </InputLeftElement>
+                        <Input
+                            color="teal.800"
+                            type="text"
+                            size="lg"
+                            value={pokemonNameSearch}
+                            placeholder="Pokédex"
+                            _placeholder={{ color: 'white', textAlign: 'center' }}
+                            onChange={(event) => handleChange(event)}
+                            onKeyPress={(event) => submitSearch(event)}
+                        />
 
-                <InputGroup paddingLeft="10px" paddingRight="10px">
-                    <InputLeftElement pointerEvents="none" paddingLeft="10px" paddingTop="5px">
-                        <FaSearch color="white" />
-                    </InputLeftElement>
-                    <Input
-                        color="teal.800"
-                        type="text"
-                        size="lg"
-                        value={pokemonNameSearch}
-                        placeholder="Pokédex"
-                        _placeholder={{ color: 'white', textAlign: 'center' }}
-                        onChange={(event) => searchPokedex(event)}
-                    />
-                    <InputRightElement paddingRight="10px" paddingTop="5px" marginRight="5px">
-                        {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
-                    </InputRightElement>
-                </InputGroup>
+                        <InputRightElement paddingRight="10px" paddingTop="5px" marginRight="5px">
+                            {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
+                        </InputRightElement>
+                    </InputGroup>
+                </FormControl>
 
                 <Spacer />
 

@@ -27,8 +27,6 @@ function PokemonDetail() {
     const history = useHistory();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
     const { currentPage, pokeID } = useParams<{ currentPage: string; pokeID: string }>();
-    console.log('the current page from params', currentPage);
-    console.log('the poke id from params', pokeID);
 
     const getPageDetail = async () => {
         const response = await axios.get(`https://intern-pokedex.myriadapps.com/api/v1/pokemon/${pokeID}`);
