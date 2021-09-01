@@ -52,6 +52,10 @@ declare module 'myTypes' {
         name: string | undefined;
         pageNum: string;
     }
+
+    interface ApiPropsInterface {
+        pokedexApiV1: string;
+    }
 }
 
 module.exports = {
@@ -61,4 +65,5 @@ module.exports = {
     PokemonLinksInterface,
     PokemonMetaInterface,
     UrlParams,
+    ApiPropsInterface,
 };
