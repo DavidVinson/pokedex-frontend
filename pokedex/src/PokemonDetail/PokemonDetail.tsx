@@ -2,7 +2,19 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { IconButton, Flex, Spacer, Container, Divider, Box, Heading, Image } from '@chakra-ui/react';
+import {
+    IconButton,
+    Flex,
+    Spacer,
+    Container,
+    Divider,
+    Box,
+    Heading,
+    Image,
+    VStack,
+    HStack,
+    Stack,
+} from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'myTypes';
 import styled from '@emotion/styled';
@@ -88,20 +100,51 @@ function PokemonDetail() {
                 </Flex>
                 <Divider paddingTop="10px" />
 
-                <Flex>
+                <HStack justifyContent="flex-start" padding="15px">
                     <Flex>
                         <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
                     </Flex>
-                    <Spacer />
-                    <Box>
-                        <p>HP {pokemonDetail?.stats.hp}</p>
-                        <p>Attack {pokemonDetail?.stats.attack}</p>
-                        <p>Defense {pokemonDetail?.stats.defense}</p>
-                        <p>Speed {pokemonDetail?.stats.speed}</p>
-                        <p>Sp Atk {pokemonDetail?.stats['special-attack']}</p>
-                        <p>Sp Def {pokemonDetail?.stats['special-defense']}</p>
-                    </Box>
-                </Flex>
+                    <Stack>
+                        <Box>HP</Box>
+                        <Box>Attack</Box>
+                        <Box>Defense</Box>
+                        <Box>Speed</Box>
+                        <Box>Sp Atk</Box>
+                        <Box>Sp Def</Box>
+                    </Stack>
+                    <Stack>
+                        <Box width="full" bg="gray.300">
+                            <Box maxW={pokemonDetail?.stats.hp} bg="teal.200">
+                                {pokemonDetail?.stats.hp}
+                            </Box>
+                        </Box>
+                        <Box width="full" bg="gray.300">
+                            <Box maxW={pokemonDetail?.stats.attack} bg="teal.200">
+                                {pokemonDetail?.stats.attack}
+                            </Box>
+                        </Box>
+                        <Box width="full" bg="gray.300">
+                            <Box maxW={pokemonDetail?.stats.defense} bg="teal.200">
+                                {pokemonDetail?.stats.defense}
+                            </Box>
+                        </Box>
+                        <Box width="full" bg="gray.300">
+                            <Box maxW={pokemonDetail?.stats.speed} bg="teal.200">
+                                {pokemonDetail?.stats.speed}
+                            </Box>
+                        </Box>
+                        <Box width="full" bg="gray.300">
+                            <Box maxW={pokemonDetail?.stats['special-attack']} bg="teal.200">
+                                {pokemonDetail?.stats['special-attack']}
+                            </Box>
+                        </Box>
+                        <Box width="full" bg="gray.300">
+                            <Box maxW={pokemonDetail?.stats['special-defense']} bg="teal.200">
+                                {pokemonDetail?.stats['special-defense']}
+                            </Box>
+                        </Box>
+                    </Stack>
+                </HStack>
                 <Flex textAlign="left">
                     <p>
                         <b>{pokemonDetail?.genus}</b>

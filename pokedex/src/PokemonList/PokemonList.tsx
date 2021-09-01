@@ -201,7 +201,7 @@ function PokemonList(props: ApiPropsInterface) {
                         _hover={{
                             // scale: '1.1',
                             scrollSnapMarginLeft: '3',
-                            backgroundColor: 'black',
+                            backgroundColor: 'lightgray',
                         }}
                         bg="white"
                         borderRadius="sm"
