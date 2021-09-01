@@ -100,51 +100,69 @@ function PokemonDetail() {
                 </Flex>
                 <Divider paddingTop="10px" />
 
-                <HStack justifyContent="flex-start" padding="15px">
-                    <Flex>
-                        <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
-                    </Flex>
-                    <Stack>
-                        <Box>HP</Box>
-                        <Box>Attack</Box>
-                        <Box>Defense</Box>
-                        <Box>Speed</Box>
-                        <Box>Sp Atk</Box>
-                        <Box>Sp Def</Box>
-                    </Stack>
-                    <Stack>
-                        <Box width="full" bg="gray.300">
-                            <Box maxW={pokemonDetail?.stats.hp} bg="teal.200">
-                                {pokemonDetail?.stats.hp}
+                <Flex padding="15px">
+                    <HStack w="full">
+                        <Flex>
+                            <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+                        </Flex>
+
+                        <Stack>
+                            <Box>HP</Box>
+                            <Box>Attack</Box>
+                            <Box>Defense</Box>
+                            <Box>Speed</Box>
+                            <Box>Sp Atk</Box>
+                            <Box>Sp Def</Box>
+                        </Stack>
+                        <Stack flexGrow={1}>
+                            <Box width="100%" bg="gray.300">
+                                <Box width={String((Number(pokemonDetail?.stats.hp) / 255) * 100) + '%'} bg="teal.200">
+                                    {pokemonDetail?.stats.hp}
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box width="full" bg="gray.300">
-                            <Box maxW={pokemonDetail?.stats.attack} bg="teal.200">
-                                {pokemonDetail?.stats.attack}
+                            <Box width="100%" bg="gray.300">
+                                <Box
+                                    width={String((Number(pokemonDetail?.stats.attack) / 255) * 100) + '%'}
+                                    bg="teal.200"
+                                >
+                                    {pokemonDetail?.stats.attack}
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box width="full" bg="gray.300">
-                            <Box maxW={pokemonDetail?.stats.defense} bg="teal.200">
-                                {pokemonDetail?.stats.defense}
+                            <Box width="100%" bg="gray.300">
+                                <Box
+                                    width={String((Number(pokemonDetail?.stats.defense) / 255) * 100) + '%'}
+                                    bg="teal.200"
+                                >
+                                    {pokemonDetail?.stats.defense}
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box width="full" bg="gray.300">
-                            <Box maxW={pokemonDetail?.stats.speed} bg="teal.200">
-                                {pokemonDetail?.stats.speed}
+                            <Box width="100%" bg="gray.300">
+                                <Box
+                                    width={String((Number(pokemonDetail?.stats.speed) / 255) * 100) + '%'}
+                                    bg="teal.200"
+                                >
+                                    {pokemonDetail?.stats.speed}
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box width="full" bg="gray.300">
-                            <Box maxW={pokemonDetail?.stats['special-attack']} bg="teal.200">
-                                {pokemonDetail?.stats['special-attack']}
+                            <Box width="100%" bg="gray.300">
+                                <Box
+                                    width={String((Number(pokemonDetail?.stats['special-attack']) / 255) * 100) + '%'}
+                                    bg="teal.200"
+                                >
+                                    {pokemonDetail?.stats['special-attack']}
+                                </Box>
                             </Box>
-                        </Box>
-                        <Box width="full" bg="gray.300">
-                            <Box maxW={pokemonDetail?.stats['special-defense']} bg="teal.200">
-                                {pokemonDetail?.stats['special-defense']}
+                            <Box width="100%" bg="gray.300">
+                                <Box
+                                    width={String((Number(pokemonDetail?.stats['special-defense']) / 255) * 100) + '%'}
+                                    bg="teal.200"
+                                >
+                                    {pokemonDetail?.stats['special-defense']}
+                                </Box>
                             </Box>
-                        </Box>
-                    </Stack>
-                </HStack>
+                        </Stack>
+                    </HStack>
+                </Flex>
                 <Flex textAlign="left">
                     <p>
                         <b>{pokemonDetail?.genus}</b>
