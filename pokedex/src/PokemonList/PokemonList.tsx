@@ -9,7 +9,7 @@ import {
     PokemonMetaInterface,
     UrlParams,
     ApiPropsInterface,
-} from 'CustomTypes';
+} from 'customTypes';
 import {
     SimpleGrid,
     Box,

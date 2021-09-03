@@ -16,7 +16,7 @@ import {
     Stack,
 } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { PokemonDetailInterface, ApiPropsInterface } from 'CustomTypes';
+import { PokemonDetailInterface, ApiPropsInterface } from 'customTypes';
 import styled from '@emotion/styled';
 
 const ProfileHeading = styled.div`
