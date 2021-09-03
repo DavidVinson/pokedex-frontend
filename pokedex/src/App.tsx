@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PokemonList from './PokemonList/PokemonList';
 import PokemonDetail from './PokemonDetail/PokemonDetail';
@@ -8,7 +7,7 @@ import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
 
 function App() {
     return (
-        <Box className="App-main">
+        <Box bg="lightseagreen" padding="20px">
             <Router>
                 <Switch>
                     <Redirect exact from="/" to="/page/1" />

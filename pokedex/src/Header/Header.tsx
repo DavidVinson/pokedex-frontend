@@ -1,6 +1,6 @@
 import React from 'react';
 import { Heading } from '@chakra-ui/react';
-import { HeaderPropsInterface } from 'myTypes';
+import { HeaderPropsInterface } from 'CustomTypes';
 
 function Header({ title }: HeaderPropsInterface) {
     return (
