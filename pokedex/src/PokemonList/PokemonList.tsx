@@ -9,7 +9,7 @@ import {
     PokemonMetaInterface,
     UrlParams,
     ApiPropsInterface,
-} from 'myTypes';
+} from 'CustomTypes';
 import {
     SimpleGrid,
     Box,
@@ -29,7 +29,7 @@ import {
 } from '@chakra-ui/react';
 
 function PokemonList(props: ApiPropsInterface) {
-    const pokedexApi = props.pokedexApiV1;
+    const pokedexApi = props.pokedexApi;
     const history = useHistory();
     const params: UrlParams = useParams();
 

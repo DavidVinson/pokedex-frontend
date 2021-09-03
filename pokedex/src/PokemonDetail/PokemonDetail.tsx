@@ -16,7 +16,7 @@ import {
     Stack,
 } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { PokemonDetailInterface } from 'myTypes';
+import { PokemonDetailInterface, ApiPropsInterface } from 'CustomTypes';
 import styled from '@emotion/styled';
 
 const ProfileHeading = styled.div`
@@ -35,13 +35,15 @@ const ProfileStat = styled.div`
     padding: 5px;
 `;
 
-function PokemonDetail() {
+function PokemonDetail(props: ApiPropsInterface) {
     const history = useHistory();
+    const pokedexApi = props.pokedexApi;
+
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
     const { currentPage, pokeID } = useParams<{ currentPage: string; pokeID: string }>();
 
     const getPageDetail = async () => {
-        const response = await axios.get(`https://intern-pokedex.myriadapps.com/api/v1/pokemon/${pokeID}`);
+        const response = await axios.get(`${pokedexApi}/${pokeID}`);
         setPokemonDetail(response.data.data);
     };
 
