@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { AxiosResponse } from 'axios';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
@@ -9,6 +10,7 @@ import {
     PokemonMetaInterface,
     UrlParams,
     ApiPropsInterface,
+    ApiDataInterface,
 } from 'customTypes';
 import {
     SimpleGrid,
@@ -42,8 +44,8 @@ function PokemonListPage() {
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
 
     useEffect(() => {
-        const response = getPokemonInfo(params);
-        console.log('useEffect response', response);
+        const response: ApiDataInterface = getPokemonInfo(params);
+        console.log('component response', response);
         // setPokemonList(response);
         // setPokemonData(response.data.links);
         // setCurrentPage(response.data.meta.current_page);

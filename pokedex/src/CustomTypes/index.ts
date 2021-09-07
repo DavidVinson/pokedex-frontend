@@ -4,7 +4,14 @@ export interface HeaderPropsInterface {
 
 export interface ApiDataInterface {
     data: {
-        data: string[];
+        data: [
+            {
+                id: string;
+                name: string;
+                image: string;
+                types: string[];
+            },
+        ];
         links: string;
         meta: string;
     };
