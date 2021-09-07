@@ -2,6 +2,38 @@ export interface HeaderPropsInterface {
     title: string;
 }
 
+export interface ApiDataInterface {
+    data: {
+        data: string[];
+        links: string;
+        meta: string;
+    };
+}
+
+export interface DataInterface {
+    id: string;
+    image: string;
+    name: string;
+    types: string[];
+}
+
+export interface LinksInterface {
+    id: string;
+    image: string;
+    name: string;
+    types: string[];
+}
+
+export interface MetaInterface {
+    current_page: string;
+    from: string;
+    last_page: string;
+    path: string;
+    per_page: string;
+    to: string;
+    total: string;
+}
+
 export interface PokemonDetailInterface {
     id: string;
     name: string;

@@ -6,6 +6,7 @@ import { IconButton, Flex, Spacer, Container, Divider, Box, Heading, Image, HSta
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface, ApiPropsInterface } from 'customTypes';
 import styled from '@emotion/styled';
+import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
 
 const ProfileHeading = styled.div`
     background-color: lightseagreen;
@@ -23,10 +24,9 @@ const ProfileStat = styled.div`
     padding: 5px;
 `;
 
-function PokemonDetailPage(props: ApiPropsInterface) {
+function PokemonDetailPage() {
     const history = useHistory();
-    const pokedexApi = props.pokedexApi;
-
+    const pokedexApi = POKEDEX_API;
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
     const { currentPage, pokeID } = useParams<{ currentPage: string; pokeID: string }>();
 

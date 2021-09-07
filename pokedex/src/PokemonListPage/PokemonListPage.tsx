@@ -27,12 +27,13 @@ import {
     CloseButton,
     FormControl,
 } from '@chakra-ui/react';
+import { getPokemonInfo } from 'services/api';
+import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
 
-function PokemonListPage(props: ApiPropsInterface) {
-    const pokedexApi = props.pokedexApi;
+function PokemonListPage() {
     const history = useHistory();
     const params: UrlParams = useParams();
-
+    const pokedexApi: any = POKEDEX_API;
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
     const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
@@ -41,18 +42,12 @@ function PokemonListPage(props: ApiPropsInterface) {
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
 
     useEffect(() => {
-        getPokemonInfo();
+        const response = getPokemonInfo(params);
+        console.log('useEffect response', response);
+        // setPokemonList(response);
+        // setPokemonData(response.data.links);
+        // setCurrentPage(response.data.meta.current_page);
     }, []);
-
-    const getPokemonInfo = async () => {
-        const response = await axios.get(pokedexApi, {
-            params: { page: params.pageNum },
-        });
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
-        setLastPage(response.data.meta.last_page);
-    };
 
     const nextPage = async () => {
         if (pokemonNameSearch) {
@@ -140,7 +135,7 @@ function PokemonListPage(props: ApiPropsInterface) {
 
     const onCloseSearch = () => {
         setPokemonNameSearch('');
-        getPokemonInfo();
+        // getPokemonInfo(pokedexApi, params);
     };
 
     return (
