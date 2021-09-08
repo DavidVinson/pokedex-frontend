@@ -28,7 +28,7 @@ import {
     CloseButton,
     FormControl,
 } from '@chakra-ui/react';
-import { getPokemonInfo } from 'services/api';
+import { getPokemonInfo, findPokemon } from 'services/api';
 import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
 
 function PokemonListPage() {
@@ -52,29 +52,23 @@ function PokemonListPage() {
     }, []);
 
     const nextPage = async () => {
+        const page = String(pokemonData?.next);
+        const strIndex = page.indexOf('=');
+        const pageNum = page.slice(strIndex + 1);
+
         if (pokemonNameSearch) {
             try {
-                const page = String(pokemonData?.next);
-                const strIndex = page.indexOf('=');
-                const pageNum = page.slice(strIndex + 1);
-
-                const response = await axios.get(pokedexApi, {
-                    params: { name: pokemonNameSearch, page: pageNum },
+                findPokemon(pokemonNameSearch, pageNum).then((response) => {
+                    setPokemonList(response.data.data);
+                    setPokemonData(response.data.links);
+                    setCurrentPage(response.data.meta.current_page);
+                    history.push(`/page/${pageNum}`);
                 });
-
-                setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setCurrentPage(response.data.meta.current_page);
-                history.push(`/page/${pageNum}`);
             } catch (error) {
                 console.log('next page search error', error.response);
             }
         } else {
             try {
-                const page = String(pokemonData?.next);
-                const strIndex = page.indexOf('=');
-                const pageNum = page.slice(strIndex + 1);
-
                 const response = await axios.get(`${pokemonData?.next}`);
                 setPokemonList(response.data.data);
                 setPokemonData(response.data.links);
@@ -143,8 +137,6 @@ function PokemonListPage() {
             setCurrentPage(response.data.meta.current_page);
             setLastPage(response.data.meta.last_page);
         });
-
-        // history.push(`/page/${lastPage}`);
     };
 
     return (
