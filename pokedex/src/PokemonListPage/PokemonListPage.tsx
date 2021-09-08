@@ -10,7 +10,6 @@ import {
     PokemonMetaInterface,
     UrlParams,
     ApiPropsInterface,
-    ApiDataInterface,
 } from 'customTypes';
 import {
     SimpleGrid,
@@ -36,19 +35,20 @@ function PokemonListPage() {
     const history = useHistory();
     const params: UrlParams = useParams();
     const pokedexApi: any = POKEDEX_API;
-    const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
+    const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>();
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
-    const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
-    const [lastPage, setLastPage] = useState<PokemonMetaInterface>();
+    const [currentPage, setCurrentPage] = useState();
+    const [lastPage, setLastPage] = useState();
     const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
 
     useEffect(() => {
-        const response: ApiDataInterface = getPokemonInfo(params);
-        console.log('component response', response);
-        // setPokemonList(response);
-        // setPokemonData(response.data.links);
-        // setCurrentPage(response.data.meta.current_page);
+        getPokemonInfo(params).then((response) => {
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            setLastPage(response.data.meta.last_page);
+        });
     }, []);
 
     const nextPage = async () => {
@@ -137,7 +137,14 @@ function PokemonListPage() {
 
     const onCloseSearch = () => {
         setPokemonNameSearch('');
-        // getPokemonInfo(pokedexApi, params);
+        getPokemonInfo(params).then((response) => {
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            setLastPage(response.data.meta.last_page);
+        });
+
+        // history.push(`/page/${lastPage}`);
     };
 
     return (
