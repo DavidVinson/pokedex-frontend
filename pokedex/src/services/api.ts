@@ -9,3 +9,8 @@ export const getPokemonInfo = async (params: UrlParams): Promise<AxiosResponse<A
     });
     return response;
 };
+
+export const getPageDetail = async (pokeID: string) => {
+    const response = await axios.get(`${POKEDEX_API}/${pokeID}`);
+    return response;
+};

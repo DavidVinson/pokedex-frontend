@@ -1,12 +1,11 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import axios from 'axios';
 import { IconButton, Flex, Spacer, Container, Divider, Box, Heading, Image, HStack, Stack } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { PokemonDetailInterface, ApiPropsInterface } from 'customTypes';
+import { PokemonDetailInterface } from 'customTypes';
 import styled from '@emotion/styled';
-import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
+import { getPageDetail } from 'services/api';
 
 const ProfileHeading = styled.div`
     background-color: lightseagreen;
@@ -26,17 +25,13 @@ const ProfileStat = styled.div`
 
 function PokemonDetailPage() {
     const history = useHistory();
-    const pokedexApi = POKEDEX_API;
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
     const { currentPage, pokeID } = useParams<{ currentPage: string; pokeID: string }>();
 
-    const getPageDetail = async () => {
-        const response = await axios.get(`${pokedexApi}/${pokeID}`);
-        setPokemonDetail(response.data.data);
-    };
-
     useEffect(() => {
-        getPageDetail();
+        getPageDetail(pokeID).then((response) => {
+            setPokemonDetail(response.data.data);
+        });
     }, []);
 
     return (
