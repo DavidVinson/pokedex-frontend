@@ -1,7 +1,21 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { IconButton, Flex, Spacer, Container, Divider, Box, Heading, Image, HStack, Stack } from '@chakra-ui/react';
+import {
+    IconButton,
+    Flex,
+    Spacer,
+    Container,
+    Divider,
+    Box,
+    Heading,
+    Image,
+    Stack,
+    Grid,
+    GridItem,
+    Center,
+    useMediaQuery,
+} from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'customTypes';
 import { getPageDetail } from 'services/api';
@@ -11,6 +25,8 @@ function PokemonDetailPage() {
     const history = useHistory();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
     const { currentPage, pokeID } = useParams<{ currentPage: string; pokeID: string }>();
+    const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
+    const [isSmallerThan480] = useMediaQuery('(max-width: 480px)');
 
     useEffect(() => {
         getPageDetail(pokeID).then((response) => {
@@ -66,17 +82,23 @@ function PokemonDetailPage() {
                             </Box>
                         ))}
                     </Box>
+                    {isSmallerThan480 ? (
+                        <Flex justifyContent="center" data-testid="poke image" w="100%">
+                            <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+                        </Flex>
+                    ) : null}
                 </Flex>
                 <Divider paddingTop="10px" />
 
-                <Flex padding="15px">
-                    <HStack flexGrow={1}>
-                        <Flex flexGrow={1}>
-                            <Spacer />
-                            <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
-                            <Spacer />
-                        </Flex>
-
+                <Grid templateColumns="repeat(6, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
+                    {isLargerThan480 ? (
+                        <GridItem rowSpan={1} colSpan={2}>
+                            <Flex justifyContent="center" data-testid="poke image" w="100%">
+                                <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+                            </Flex>
+                        </GridItem>
+                    ) : null}
+                    <GridItem colSpan={1}>
                         <Stack>
                             <Box>HP</Box>
                             <Box>Attack</Box>
@@ -85,7 +107,9 @@ function PokemonDetailPage() {
                             <Box>Sp Atk</Box>
                             <Box>Sp Def</Box>
                         </Stack>
-                        <Stack flexGrow={1}>
+                    </GridItem>
+                    <GridItem colSpan={3}>
+                        <Stack>
                             <Box width="100%" bg="gray.300">
                                 {Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) <= 10 ? (
                                     <Box
@@ -228,8 +252,8 @@ function PokemonDetailPage() {
                                 )}
                             </Box>
                         </Stack>
-                    </HStack>
-                </Flex>
+                    </GridItem>
+                </Grid>
                 <Flex textAlign="left" marginTop="15px" marginBottom="15px">
                     <Box>
                         <b>{pokemonDetail?.genus}</b>
