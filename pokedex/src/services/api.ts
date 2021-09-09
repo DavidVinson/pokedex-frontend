@@ -26,3 +26,19 @@ export const getPageDetail = async (pokeID: string) => {
     const response = await axios.get(`${POKEDEX_API}/${pokeID}`);
     return response;
 };
+
+export const nextPage = async (
+    page: string,
+    pageNum: string,
+    pokemonNameSearch: string,
+): Promise<AxiosResponse<ApiDataInterface>> => {
+    if (pokemonNameSearch) {
+        const response = await axios.get(POKEDEX_API, {
+            params: { name: pokemonNameSearch, page: pageNum },
+        });
+        return response;
+    } else {
+        const response = await axios.get(page);
+        return response;
+    }
+};
