@@ -10,10 +10,15 @@ export const getPokemonInfo = async (params: UrlParams): Promise<AxiosResponse<A
     return response;
 };
 
-export const findPokemon = async (name: string, pageNum: string): Promise<AxiosResponse<ApiDataInterface>> => {
+export const findPokemon = async (name: string, pageNum?: string): Promise<AxiosResponse<ApiDataInterface>> => {
     const response = await axios.get(POKEDEX_API, {
         params: { name: name, page: pageNum },
     });
+    return response;
+};
+
+export const getPage = async (page: string) => {
+    const response = await axios.get(`${page}`);
     return response;
 };
 
