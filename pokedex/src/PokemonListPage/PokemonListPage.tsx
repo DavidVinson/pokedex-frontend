@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PokemonListInterface, PokemonLinksInterface, UrlParams } from 'customTypes';
-import { getPokemonInfo, findPokemon, getPage, nextPage } from 'services/api';
+import { getPokemonInfo, findPokemon, nextPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {
     SimpleGrid,
@@ -41,38 +41,8 @@ function PokemonListPage() {
         });
     }, []);
 
-    // const nextPage = () => {
-    //     const page = String(pokemonData?.next);
-    //     const strIndex = page.indexOf('=');
-    //     const pageNum = page.slice(strIndex + 1);
-
-    //     if (pokemonNameSearch) {
-    //         try {
-    //             findPokemon(pokemonNameSearch, pageNum).then((response) => {
-    //                 setPokemonList(response.data.data);
-    //                 setPokemonData(response.data.links);
-    //                 setCurrentPage(response.data.meta.current_page);
-    //                 history.push(`/page/${pageNum}`);
-    //             });
-    //         } catch (error) {
-    //             console.log('next page search error', error.response);
-    //         }
-    //     } else {
-    //         try {
-    //             getPage(page).then((response) => {
-    //                 setPokemonList(response.data.data);
-    //                 setPokemonData(response.data.links);
-    //                 setCurrentPage(response.data.meta.current_page);
-    //                 history.push(`/page/${pageNum}`);
-    //             });
-    //         } catch (error) {
-    //             console.log('next page error', error.response);
-    //         }
-    //     }
-    // };
-
-    const nextPageNav = () => {
-        const page = String(pokemonData?.next);
+    const nextPageNav = (pagination: string | null | undefined) => {
+        const page = String(pagination);
         const strIndex = page.indexOf('=');
         const pageNum = page.slice(strIndex + 1);
         nextPage(page, pageNum, pokemonNameSearch).then((response) => {
@@ -81,36 +51,6 @@ function PokemonListPage() {
             setCurrentPage(response.data.meta.current_page);
             history.push(`/page/${pageNum}`);
         });
-    };
-
-    const prevPage = () => {
-        const page = String(pokemonData?.prev);
-        const strIndex = page.indexOf('=');
-        const pageNum = page.slice(strIndex + 1);
-
-        if (pokemonNameSearch) {
-            try {
-                findPokemon(pokemonNameSearch, pageNum).then((response) => {
-                    setPokemonList(response.data.data);
-                    setPokemonData(response.data.links);
-                    setCurrentPage(response.data.meta.current_page);
-                    history.push(`/page/${pageNum}`);
-                });
-            } catch (error) {
-                console.log('previous page search error', error.response);
-            }
-        } else {
-            try {
-                getPage(page).then((response) => {
-                    setPokemonList(response.data.data);
-                    setPokemonData(response.data.links);
-                    setCurrentPage(response.data.meta.current_page);
-                    history.push(`/page/${pageNum}`);
-                });
-            } catch (error) {
-                console.log('previous page error', error.response);
-            }
-        }
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +88,7 @@ function PokemonListPage() {
                         isRound={true}
                         size="lg"
                         bgColor="teal.500"
-                        onClick={prevPage}
+                        onClick={() => nextPageNav(pokemonData?.prev)}
                     />
                 )}
                 <Spacer />
@@ -183,7 +123,7 @@ function PokemonListPage() {
                         isRound={true}
                         size="lg"
                         bgColor="teal.500"
-                        onClick={nextPageNav}
+                        onClick={() => nextPageNav(pokemonData?.next)}
                     />
                 )}
             </Flex>

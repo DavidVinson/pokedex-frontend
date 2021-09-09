@@ -17,11 +17,6 @@ export const findPokemon = async (name: string, pageNum?: string): Promise<Axios
     return response;
 };
 
-export const getPage = async (page: string) => {
-    const response = await axios.get(`${page}`);
-    return response;
-};
-
 export const getPageDetail = async (pokeID: string) => {
     const response = await axios.get(`${POKEDEX_API}/${pokeID}`);
     return response;
