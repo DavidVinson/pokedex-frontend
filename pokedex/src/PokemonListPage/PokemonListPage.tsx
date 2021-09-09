@@ -1,15 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import { PokemonListInterface, PokemonLinksInterface, UrlParams } from 'customTypes';
+import { getPokemonInfo, findPokemon, nextPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import {
-    PokemonListInterface,
-    PokemonLinksInterface,
-    PokemonMetaInterface,
-    UrlParams,
-    ApiPropsInterface,
-} from 'customTypes';
 import {
     SimpleGrid,
     Box,
@@ -28,119 +22,60 @@ import {
     FormControl,
 } from '@chakra-ui/react';
 
-function PokemonList(props: ApiPropsInterface) {
-    const pokedexApi = props.pokedexApi;
+function PokemonListPage() {
     const history = useHistory();
     const params: UrlParams = useParams();
-
-    const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>([]);
+    const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>();
     const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
-    const [currentPage, setCurrentPage] = useState<PokemonMetaInterface>();
-    const [lastPage, setLastPage] = useState<PokemonMetaInterface>();
+    const [currentPage, setCurrentPage] = useState();
+    const [lastPage, setLastPage] = useState();
     const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
 
     useEffect(() => {
-        getPokemonInfo();
+        getPokemonInfo(params).then((response) => {
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            setLastPage(response.data.meta.last_page);
+        });
     }, []);
 
-    const getPokemonInfo = async () => {
-        const response = await axios.get(pokedexApi, {
-            params: { page: params.pageNum },
+    const nextPageNav = (pagination: string | null | undefined) => {
+        const page = String(pagination);
+        const strIndex = page.indexOf('=');
+        const pageNum = page.slice(strIndex + 1);
+        nextPage(page, pageNum, pokemonNameSearch).then((response) => {
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            history.push(`/page/${pageNum}`);
         });
-        setPokemonList(response.data.data);
-        setPokemonData(response.data.links);
-        setCurrentPage(response.data.meta.current_page);
-        setLastPage(response.data.meta.last_page);
-    };
-
-    const nextPage = async () => {
-        if (pokemonNameSearch) {
-            try {
-                const page = String(pokemonData?.next);
-                const strIndex = page.indexOf('=');
-                const pageNum = page.slice(strIndex + 1);
-
-                const response = await axios.get(pokedexApi, {
-                    params: { name: pokemonNameSearch, page: pageNum },
-                });
-
-                setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setCurrentPage(response.data.meta.current_page);
-                history.push(`/page/${pageNum}`);
-            } catch (error) {
-                console.log('next page search error', error.response);
-            }
-        } else {
-            try {
-                const page = String(pokemonData?.next);
-                const strIndex = page.indexOf('=');
-                const pageNum = page.slice(strIndex + 1);
-
-                const response = await axios.get(`${pokemonData?.next}`);
-                setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setCurrentPage(response.data.meta.current_page);
-                history.push(`/page/${pageNum}`);
-            } catch (error) {
-                console.log('next page error', error.response);
-            }
-        }
-    };
-
-    const prevPage = async () => {
-        if (pokemonNameSearch) {
-            try {
-                const page = String(pokemonData?.prev);
-                const strIndex = page.indexOf('=');
-                const pageNum = page.slice(strIndex + 1);
-
-                const response = await axios.get(pokedexApi, {
-                    params: { name: pokemonNameSearch, page: pageNum },
-                });
-
-                setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setCurrentPage(response.data.meta.current_page);
-                history.push(`/page/${pageNum}`);
-            } catch (error) {
-                console.log('previous page search error', error.response);
-            }
-        } else {
-            try {
-                const page = String(pokemonData?.prev);
-                const strIndex = page.indexOf('=');
-                const pageNum = page.slice(strIndex + 1);
-
-                const response = await axios.get(`${pokemonData?.prev}`);
-                setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setCurrentPage(response.data.meta.current_page);
-                history.push(`/page/${pageNum}`);
-            } catch (error) {
-                console.log('previous page error', error.response);
-            }
-        }
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setPokemonNameSearch(event.target.value);
     };
 
-    const submitSearch = async (event: KeyboardEvent<HTMLInputElement>) => {
+    const submitSearch = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            const response = await axios.get(pokedexApi, {
-                params: { name: pokemonNameSearch },
+            findPokemon(pokemonNameSearch).then((response) => {
+                setPokemonList(response.data.data);
+                setPokemonData(response.data.links);
+                setLastPage(response.data.meta.last_page);
+                history.push(`/page/${startPage}`);
             });
-            setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
         }
     };
 
     const onCloseSearch = () => {
         setPokemonNameSearch('');
-        getPokemonInfo();
+        getPokemonInfo(params).then((response) => {
+            setPokemonList(response.data.data);
+            setPokemonData(response.data.links);
+            setCurrentPage(response.data.meta.current_page);
+            setLastPage(response.data.meta.last_page);
+        });
     };
 
     return (
@@ -153,7 +88,7 @@ function PokemonList(props: ApiPropsInterface) {
                         isRound={true}
                         size="lg"
                         bgColor="teal.500"
-                        onClick={prevPage}
+                        onClick={() => nextPageNav(pokemonData?.prev)}
                     />
                 )}
                 <Spacer />
@@ -188,7 +123,7 @@ function PokemonList(props: ApiPropsInterface) {
                         isRound={true}
                         size="lg"
                         bgColor="teal.500"
-                        onClick={nextPage}
+                        onClick={() => nextPageNav(pokemonData?.next)}
                     />
                 )}
             </Flex>
@@ -245,4 +180,4 @@ function PokemonList(props: ApiPropsInterface) {
     );
 }
 
-export default PokemonList;
+export default PokemonListPage;

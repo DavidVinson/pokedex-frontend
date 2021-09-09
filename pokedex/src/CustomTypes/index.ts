@@ -2,6 +2,12 @@ export interface HeaderPropsInterface {
     title: string;
 }
 
+export interface ApiDataInterface {
+    data: PokemonListInterface[];
+    links: PokemonLinksInterface;
+    meta: any;
+}
+
 export interface PokemonDetailInterface {
     id: string;
     name: string;
