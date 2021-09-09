@@ -4,24 +4,8 @@ import { useParams, useHistory } from 'react-router-dom';
 import { IconButton, Flex, Spacer, Container, Divider, Box, Heading, Image, HStack, Stack } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'customTypes';
-import styled from '@emotion/styled';
 import { getPageDetail } from 'services/api';
-
-const ProfileHeading = styled.div`
-    background-color: lightseagreen;
-    color: white;
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-left: 5px;
-    padding-bottom: 5px;
-    text-align: left;
-    width: 100%;
-`;
-
-const ProfileStat = styled.div`
-    text-transform: capitalize;
-    padding: 5px;
-`;
+import { ProfileHeading, ProfileStat } from 'styleComps';
 
 function PokemonDetailPage() {
     const history = useHistory();
@@ -247,13 +231,13 @@ function PokemonDetailPage() {
                     </HStack>
                 </Flex>
                 <Flex textAlign="left" marginTop="15px" marginBottom="15px">
-                    <p>
+                    <Box>
                         <b>{pokemonDetail?.genus}</b>
-                    </p>
+                    </Box>
                 </Flex>
 
                 <Flex textAlign="left" paddingBottom="15px">
-                    <p>{pokemonDetail?.description}</p>
+                    <Box>{pokemonDetail?.description}</Box>
                 </Flex>
 
                 <Flex marginTop="15px" marginBottom="15px">
