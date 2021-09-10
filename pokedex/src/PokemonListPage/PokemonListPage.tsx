@@ -20,7 +20,10 @@ import {
     Image,
     CloseButton,
     FormControl,
-    Text,
+    HStack,
+    Grid,
+    GridItem,
+    useMediaQuery,
 } from '@chakra-ui/react';
 
 function PokemonListPage() {
@@ -32,6 +35,8 @@ function PokemonListPage() {
     const [lastPage, setLastPage] = useState();
     const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
+    const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
+    const [isSmallerThan480] = useMediaQuery('(max-width: 480px)');
 
     useEffect(() => {
         getPokemonInfo(params).then((response) => {
@@ -63,6 +68,7 @@ function PokemonListPage() {
             findPokemon(pokemonNameSearch).then((response) => {
                 setPokemonList(response.data.data);
                 setPokemonData(response.data.links);
+                setCurrentPage(response.data.meta.current_page);
                 setLastPage(response.data.meta.last_page);
                 history.push(`/page/${startPage}`);
             });
@@ -80,54 +86,109 @@ function PokemonListPage() {
     };
 
     return (
-        <Container height="100%">
-            <Flex paddingTop="15px" paddingBottom="15px">
-                {startPage !== params.pageNum && (
-                    <IconButton
-                        aria-label="left-arrow"
-                        icon={<FaArrowLeft color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => pageNav(pokemonData?.prev)}
-                    />
-                )}
-                <Spacer />
-                <FormControl id="text">
-                    <InputGroup paddingLeft="10px" paddingRight="10px">
-                        <InputLeftElement pointerEvents="none" paddingLeft="10px" paddingTop="5px">
-                            <FaSearch color="white" />
-                        </InputLeftElement>
-                        <Input
-                            color="teal.800"
-                            type="text"
+        <Container height="100%" minH="100vh">
+            {isLargerThan480 ? (
+                <Flex justifyContent="center" paddingBottom="5%">
+                    {startPage !== params.pageNum ? (
+                        <IconButton
+                            aria-label="left-arrow"
+                            icon={<FaArrowLeft color="white" />}
+                            isRound={true}
                             size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonData?.prev)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                    <FormControl id="text" data-textid="form input" marginLeft="10%" marginRight="10%">
+                        {pokemonNameSearch ? null : (
+                            <InputLeftElement pointerEvents="none" paddingTop="1.25rem" paddingLeft="1rem">
+                                <FaSearch color="white" />
+                            </InputLeftElement>
+                        )}
+                        <Input
+                            color="white"
+                            bg="teal.400"
+                            type="text"
+                            fontWeight="bold"
+                            fontSize="2rem"
+                            w="100%"
+                            h="60px"
+                            justifyContent="center"
                             value={pokemonNameSearch}
                             placeholder="Pokédex"
-                            _placeholder={{ color: 'white', textAlign: 'center' }}
+                            _placeholder={{ color: 'teal', textAlign: 'center', fontWeight: 'bold' }}
                             onChange={(event) => handleChange(event)}
                             onKeyPress={(event) => submitSearch(event)}
                         />
 
-                        <InputRightElement paddingRight="10px" paddingTop="5px" marginRight="5px">
+                        <InputRightElement paddingRight="10px" paddingTop="1.25rem" paddingLeft="1rem">
                             {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
                         </InputRightElement>
-                    </InputGroup>
-                </FormControl>
+                    </FormControl>
 
-                <Spacer />
+                    {currentPage !== lastPage ? (
+                        <IconButton
+                            aria-label="right-arrow"
+                            icon={<FaArrowRight color="white" />}
+                            isRound={true}
+                            size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonData?.next)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                </Flex>
+            ) : (
+                <Flex justifyContent="center" paddingBottom="5%">
+                    {startPage !== params.pageNum ? (
+                        <IconButton
+                            aria-label="left-arrow"
+                            icon={<FaArrowLeft color="white" />}
+                            isRound={true}
+                            size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonData?.prev)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                    <FormControl id="text" data-textid="form input" marginLeft="10%" marginRight="10%">
+                        <Input
+                            color="white"
+                            type="text"
+                            fontWeight="bold"
+                            w="100%"
+                            h="60px"
+                            justifyContent="center"
+                            value={pokemonNameSearch}
+                            placeholder="Search Pokédex"
+                            _placeholder={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}
+                            onChange={(event) => handleChange(event)}
+                            onKeyPress={(event) => submitSearch(event)}
+                        />
 
-                {currentPage !== lastPage && (
-                    <IconButton
-                        aria-label="right-arrow"
-                        icon={<FaArrowRight color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => pageNav(pokemonData?.next)}
-                    />
-                )}
-            </Flex>
+                        <InputRightElement paddingRight="10px" paddingTop="1.25rem" paddingLeft="1rem">
+                            {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
+                        </InputRightElement>
+                    </FormControl>
+
+                    {currentPage !== lastPage ? (
+                        <IconButton
+                            aria-label="right-arrow"
+                            icon={<FaArrowRight color="white" />}
+                            isRound={true}
+                            size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonData?.next)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                </Flex>
+            )}
 
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
                 {pokemonList?.length === 0 ? (

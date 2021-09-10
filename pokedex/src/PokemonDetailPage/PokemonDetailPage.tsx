@@ -19,7 +19,7 @@ import {
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'customTypes';
 import { getPageDetail } from 'services/api';
-import { ProfileHeading, ProfileStat } from 'styleComps';
+import { ProfileHeading, ProfileStat, Page } from 'styleComps';
 
 function PokemonDetailPage() {
     const history = useHistory();
@@ -35,22 +35,40 @@ function PokemonDetailPage() {
     }, []);
 
     return (
-        <Container>
-            <Flex paddingBottom="25px" color="red.700">
-                <IconButton
-                    aria-label="left-arrow"
-                    icon={<FaArrowLeft color="lightseagreen" />}
-                    isRound={true}
-                    size="lg"
-                    bgColor="white"
-                    onClick={() => history.push(`/page/${currentPage}`)}
-                />
-                <Spacer />
-                <Heading color="white" as="h1" textAlign="center">
-                    {pokemonDetail?.name}
-                </Heading>
-                <Spacer />
-            </Flex>
+        <Container data-testid="detail container">
+            {isSmallerThan480 ? (
+                <Flex paddingBottom="15px">
+                    <IconButton
+                        aria-label="left-arrow"
+                        icon={<FaArrowLeft color="white" />}
+                        bg="lightseagreen"
+                        size="lg"
+                        onClick={() => history.push(`/page/${currentPage}`)}
+                    />
+                    <Box paddingTop="5px" color="white">
+                        <b>{pokemonDetail?.name}</b> #{pokeID}
+                    </Box>
+                    <Flex justifyContent="center" data-testid="poke image" w="50%">
+                        <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
+                    </Flex>
+                </Flex>
+            ) : (
+                <Flex paddingBottom="15px">
+                    <IconButton
+                        aria-label="left-arrow"
+                        icon={<FaArrowLeft color="lightseagreen" />}
+                        isRound={true}
+                        size="lg"
+                        bgColor="white"
+                        onClick={() => history.push(`/page/${currentPage}`)}
+                    />
+                    <Spacer />
+                    <Heading color="white" as="h1" textAlign="center">
+                        {pokemonDetail?.name}
+                    </Heading>
+                    <Spacer />
+                </Flex>
+            )}
 
             <Container bg="white">
                 <Flex>
@@ -82,13 +100,8 @@ function PokemonDetailPage() {
                             </Box>
                         ))}
                     </Box>
-                    {isSmallerThan480 ? (
-                        <Flex justifyContent="center" data-testid="poke image" w="100%">
-                            <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
-                        </Flex>
-                    ) : null}
                 </Flex>
-                <Divider paddingTop="10px" />
+                <Divider paddingTop="5px" />
                 {isLargerThan480 ? (
                     <Grid templateColumns="repeat(6, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
                         <GridItem rowSpan={1} colSpan={2}>
@@ -440,7 +453,7 @@ function PokemonDetailPage() {
                     </Box>
                 </Flex>
 
-                <Flex textAlign="left" paddingBottom="15px">
+                <Flex textAlign="left">
                     <Box>{pokemonDetail?.description}</Box>
                 </Flex>
 

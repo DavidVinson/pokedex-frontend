@@ -15,3 +15,8 @@ export const ProfileStat = styled.div`
     text-transform: capitalize;
     padding: 5px;
 `;
+
+export const Page = styled.div`
+    background-color: lightseagreen;
+    padding: 20px;
+`;
