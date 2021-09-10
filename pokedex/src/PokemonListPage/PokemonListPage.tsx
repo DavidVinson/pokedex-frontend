@@ -153,19 +153,19 @@ function PokemonListPage() {
                             <Divider />
 
                             <Center>
-                                <Image src={poke.image} alt={poke.name} />
+                                <Image src={poke.image} alt={poke.name} w="75%" />
                             </Center>
                             <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
                                 {poke.types.map((type) => (
                                     <Box
                                         key={type}
+                                        border="1px solid"
+                                        borderColor={`types.${type}.border`}
                                         borderRadius="md"
                                         color={`types.${type}.font`}
                                         bgColor={`types.${type}.bg`}
-                                        borderColor={`types.${type}.border`}
-                                        border="1px solid"
                                         width="fit-content"
-                                        textAlign="center"
+                                        justifyContent="center"
                                         minW="50px"
                                         padding="5px"
                                         lineHeight="8px"
