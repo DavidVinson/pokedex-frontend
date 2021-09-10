@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { PokemonListInterface, PokemonLinksInterface, UrlParams } from 'customTypes';
-import { getPokemonInfo, findPokemon, nextPage } from 'services/api';
+import { getPokemonInfo, findPokemon, getPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {
     SimpleGrid,
@@ -20,6 +20,7 @@ import {
     Image,
     CloseButton,
     FormControl,
+    Text,
 } from '@chakra-ui/react';
 
 function PokemonListPage() {
@@ -41,11 +42,11 @@ function PokemonListPage() {
         });
     }, []);
 
-    const nextPageNav = (pagination: string | null | undefined) => {
+    const pageNav = (pagination: string | null | undefined) => {
         const page = String(pagination);
         const strIndex = page.indexOf('=');
         const pageNum = page.slice(strIndex + 1);
-        nextPage(page, pageNum, pokemonNameSearch).then((response) => {
+        getPage(page, pageNum, pokemonNameSearch).then((response) => {
             setPokemonList(response.data.data);
             setPokemonData(response.data.links);
             setCurrentPage(response.data.meta.current_page);
@@ -88,7 +89,7 @@ function PokemonListPage() {
                         isRound={true}
                         size="lg"
                         bgColor="teal.500"
-                        onClick={() => nextPageNav(pokemonData?.prev)}
+                        onClick={() => pageNav(pokemonData?.prev)}
                     />
                 )}
                 <Spacer />
@@ -123,58 +124,63 @@ function PokemonListPage() {
                         isRound={true}
                         size="lg"
                         bgColor="teal.500"
-                        onClick={() => nextPageNav(pokemonData?.next)}
+                        onClick={() => pageNav(pokemonData?.next)}
                     />
                 )}
             </Flex>
 
             <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
-                {pokemonList?.map((poke) => (
-                    <Box
-                        key={poke.id}
-                        cursor="pointer"
-                        _hover={{
-                            // scale: '1.1',
-                            scrollSnapMarginLeft: '3',
-                            backgroundColor: 'lightgray',
-                        }}
-                        bg="white"
-                        borderRadius="sm"
-                        onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
-                    >
-                        <Box textAlign="left" padding="5px">
-                            <b>{poke.name}</b>
-                        </Box>
-                        <Divider />
-
-                        <Center>
-                            <Image src={poke.image} alt={poke.name} />
-                        </Center>
-                        <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
-                            {poke.types.map((type) => (
-                                <Box
-                                    key={type}
-                                    borderRadius="md"
-                                    color={`types.${type}.font`}
-                                    bgColor={`types.${type}.bg`}
-                                    borderColor={`types.${type}.border`}
-                                    border="1px solid"
-                                    width="fit-content"
-                                    textAlign="center"
-                                    minW="50px"
-                                    padding="5px"
-                                    lineHeight="8px"
-                                    fontSize="8px"
-                                    display="inline-flex"
-                                    marginLeft="5px"
-                                    textTransform="uppercase"
-                                >
-                                    {type}
-                                </Box>
-                            ))}
-                        </Box>
+                {pokemonList?.length === 0 ? (
+                    <Box columns={2} justifyContent="center" cursor="pointer" bg="white" borderRadius="sm">
+                        Oops...No pokemon found
                     </Box>
-                ))}
+                ) : (
+                    pokemonList?.map((poke) => (
+                        <Box
+                            key={poke.id}
+                            cursor="pointer"
+                            _hover={{
+                                scrollSnapMarginLeft: '3',
+                                backgroundColor: 'lightgray',
+                            }}
+                            bg="white"
+                            borderRadius="sm"
+                            onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
+                        >
+                            <Box textAlign="left" padding="5px">
+                                <b>{poke.name}</b>
+                            </Box>
+                            <Divider />
+
+                            <Center>
+                                <Image src={poke.image} alt={poke.name} />
+                            </Center>
+                            <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
+                                {poke.types.map((type) => (
+                                    <Box
+                                        key={type}
+                                        borderRadius="md"
+                                        color={`types.${type}.font`}
+                                        bgColor={`types.${type}.bg`}
+                                        borderColor={`types.${type}.border`}
+                                        border="1px solid"
+                                        width="fit-content"
+                                        textAlign="center"
+                                        minW="50px"
+                                        padding="5px"
+                                        lineHeight="8px"
+                                        fontSize="8px"
+                                        display="inline-flex"
+                                        marginLeft="5px"
+                                        textTransform="uppercase"
+                                    >
+                                        {type}
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    ))
+                )}
             </SimpleGrid>
         </Container>
     );

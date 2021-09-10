@@ -22,7 +22,7 @@ export const getPageDetail = async (pokeID: string) => {
     return response;
 };
 
-export const nextPage = async (
+export const getPage = async (
     page: string,
     pageNum: string,
     pokemonNameSearch: string,
