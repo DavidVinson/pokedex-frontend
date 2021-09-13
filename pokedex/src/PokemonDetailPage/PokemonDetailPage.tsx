@@ -20,6 +20,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'customTypes';
 import { getPageDetail } from 'services/api';
 import { ProfileHeading, ProfileStat, Page } from 'styleComps';
+import PokemonDetailPageSmall from './PokemonDetailPageSmall';
 
 function PokemonDetailPage() {
     const history = useHistory();
