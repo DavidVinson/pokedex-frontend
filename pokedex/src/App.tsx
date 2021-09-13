@@ -2,9 +2,12 @@ import React from 'react';
 import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import PokemonListPage from './PokemonListPage/PokemonListPage';
 import PokemonDetailPage from './PokemonDetailPage/PokemonDetailPage';
-import { Box } from '@chakra-ui/react';
+import PokemonDetailPageSmall from 'PokemonDetailPage/PokemonDetailPageSmall';
+import { Box, useMediaQuery } from '@chakra-ui/react';
 
 function App() {
+    const [isSmallerThan480] = useMediaQuery('(max-width: 480px)');
+
     return (
         <Box bg="lightseagreen" padding="20px">
             <Router>
@@ -16,7 +19,7 @@ function App() {
                     </Route>
 
                     <Route path="/detail/:currentPage/:pokeID">
-                        <PokemonDetailPage />
+                        {isSmallerThan480 ? <PokemonDetailPageSmall /> : <PokemonDetailPage />}
                     </Route>
                 </Switch>
             </Router>

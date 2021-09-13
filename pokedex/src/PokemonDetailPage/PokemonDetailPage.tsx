@@ -13,21 +13,16 @@ import {
     Stack,
     Grid,
     GridItem,
-    Center,
-    useMediaQuery,
 } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'customTypes';
 import { getPageDetail } from 'services/api';
-import { ProfileHeading, ProfileStat, Page } from 'styleComps';
-import PokemonDetailPageSmall from './PokemonDetailPageSmall';
+import { ProfileHeading, ProfileStat } from 'styleComps';
 
 function PokemonDetailPage() {
     const history = useHistory();
     const [pokemonDetail, setPokemonDetail] = useState<PokemonDetailInterface>();
     const { currentPage, pokeID } = useParams<{ currentPage: string; pokeID: string }>();
-    const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
-    const [isSmallerThan480] = useMediaQuery('(max-width: 480px)');
 
     useEffect(() => {
         getPageDetail(pokeID).then((response) => {
@@ -37,39 +32,21 @@ function PokemonDetailPage() {
 
     return (
         <Container data-testid="detail container">
-            {isSmallerThan480 ? (
-                <Flex paddingBottom="15px">
-                    <IconButton
-                        aria-label="left-arrow"
-                        icon={<FaArrowLeft color="white" />}
-                        bg="lightseagreen"
-                        size="lg"
-                        onClick={() => history.push(`/page/${currentPage}`)}
-                    />
-                    <Box paddingTop="5px" color="white">
-                        <b>{pokemonDetail?.name}</b> #{pokeID}
-                    </Box>
-                    <Flex justifyContent="center" data-testid="poke image" w="50%">
-                        <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} />
-                    </Flex>
-                </Flex>
-            ) : (
-                <Flex paddingBottom="15px">
-                    <IconButton
-                        aria-label="left-arrow"
-                        icon={<FaArrowLeft color="lightseagreen" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="white"
-                        onClick={() => history.push(`/page/${currentPage}`)}
-                    />
-                    <Spacer />
-                    <Heading color="white" as="h1" textAlign="center">
-                        {pokemonDetail?.name}
-                    </Heading>
-                    <Spacer />
-                </Flex>
-            )}
+            <Flex paddingBottom="15px">
+                <IconButton
+                    aria-label="left-arrow"
+                    icon={<FaArrowLeft color="lightseagreen" />}
+                    isRound={true}
+                    size="lg"
+                    bgColor="white"
+                    onClick={() => history.push(`/page/${currentPage}`)}
+                />
+                <Spacer />
+                <Heading color="white" as="h1" textAlign="center">
+                    {pokemonDetail?.name}
+                </Heading>
+                <Spacer />
+            </Flex>
 
             <Container bg="white">
                 <Flex>
@@ -103,351 +80,169 @@ function PokemonDetailPage() {
                     </Box>
                 </Flex>
                 <Divider paddingTop="5px" />
-                {isLargerThan480 ? (
-                    <Grid templateColumns="repeat(6, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
-                        <GridItem rowSpan={1} colSpan={2}>
-                            <Flex justifyContent="center" data-testid="poke image" w="100%">
-                                <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} w="100%" />
-                            </Flex>
-                        </GridItem>
+                <Grid templateColumns="repeat(6, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
+                    <GridItem rowSpan={1} colSpan={2}>
+                        <Flex justifyContent="center" data-testid="poke image" w="100%">
+                            <Image src={pokemonDetail?.image} alt={pokemonDetail?.name} w="100%" />
+                        </Flex>
+                    </GridItem>
 
-                        <GridItem colSpan={1}>
-                            <Stack>
-                                <Box>HP</Box>
-                                <Box>Attack</Box>
-                                <Box>Defense</Box>
-                                <Box>Speed</Box>
-                                <Box>Sp Atk</Box>
-                                <Box>Sp Def</Box>
-                            </Stack>
-                        </GridItem>
-                        <GridItem colSpan={3}>
-                            <Stack>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) + 8) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.hp}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100)) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.hp}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.attack}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100)) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.attack}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.defense}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100)) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.defense}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.speed}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100)) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.speed}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats['special-attack']) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-attack']) / 255) * 100,
-                                                    ) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-attack']}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-attack']) / 255) * 100,
-                                                    ),
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-attack']}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats['special-defense']) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-defense']) / 255) * 100,
-                                                    ) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-defense']}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-defense']) / 255) * 100,
-                                                    ),
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-defense']}
-                                        </Box>
-                                    )}
-                                </Box>
-                            </Stack>
-                        </GridItem>
-                    </Grid>
-                ) : (
-                    <Grid templateColumns="repeat(4, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
-                        <GridItem colSpan={1}>
-                            <Stack>
-                                <Box>HP</Box>
-                                <Box>Attack</Box>
-                                <Box>Defense</Box>
-                                <Box>Speed</Box>
-                                <Box>Sp Atk</Box>
-                                <Box>Sp Def</Box>
-                            </Stack>
-                        </GridItem>
-                        <GridItem colSpan={3}>
-                            <Stack>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) + 8) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.hp}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100)) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.hp}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.attack}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100)) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.attack}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.defense}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100)) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.defense}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.speed}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100)) +
-                                                '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats.speed}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats['special-attack']) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-attack']) / 255) * 100,
-                                                    ) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-attack']}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-attack']) / 255) * 100,
-                                                    ),
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-attack']}
-                                        </Box>
-                                    )}
-                                </Box>
-                                <Box width="100%" bg="gray.300">
-                                    {Math.ceil((Number(pokemonDetail?.stats['special-defense']) / 255) * 100) <= 10 ? (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-defense']) / 255) * 100,
-                                                    ) + 8,
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-defense']}
-                                        </Box>
-                                    ) : (
-                                        <Box
-                                            width={
-                                                String(
-                                                    Math.ceil(
-                                                        (Number(pokemonDetail?.stats['special-defense']) / 255) * 100,
-                                                    ),
-                                                ) + '%'
-                                            }
-                                            bg="teal.200"
-                                        >
-                                            {pokemonDetail?.stats['special-defense']}
-                                        </Box>
-                                    )}
-                                </Box>
-                            </Stack>
-                        </GridItem>
-                    </Grid>
-                )}
+                    <GridItem colSpan={1}>
+                        <Stack>
+                            <Box>HP</Box>
+                            <Box>Attack</Box>
+                            <Box>Defense</Box>
+                            <Box>Speed</Box>
+                            <Box>Sp Atk</Box>
+                            <Box>Sp Def</Box>
+                        </Stack>
+                    </GridItem>
+                    <GridItem colSpan={3}>
+                        <Stack>
+                            <Box width="100%" bg="gray.300">
+                                {Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) <= 10 ? (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100) + 8) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.hp}
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        width={String(Math.ceil((Number(pokemonDetail?.stats.hp) / 255) * 100)) + '%'}
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.hp}
+                                    </Box>
+                                )}
+                            </Box>
+                            <Box width="100%" bg="gray.300">
+                                {Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100) <= 10 ? (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100) + 8) +
+                                            '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.attack}
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.attack) / 255) * 100)) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.attack}
+                                    </Box>
+                                )}
+                            </Box>
+                            <Box width="100%" bg="gray.300">
+                                {Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100) <= 10 ? (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100) + 8) +
+                                            '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.defense}
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.defense) / 255) * 100)) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.defense}
+                                    </Box>
+                                )}
+                            </Box>
+                            <Box width="100%" bg="gray.300">
+                                {Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100) <= 10 ? (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100) + 8) +
+                                            '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.speed}
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        width={
+                                            String(Math.ceil((Number(pokemonDetail?.stats.speed) / 255) * 100)) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats.speed}
+                                    </Box>
+                                )}
+                            </Box>
+                            <Box width="100%" bg="gray.300">
+                                {Math.ceil((Number(pokemonDetail?.stats['special-attack']) / 255) * 100) <= 10 ? (
+                                    <Box
+                                        width={
+                                            String(
+                                                Math.ceil(
+                                                    (Number(pokemonDetail?.stats['special-attack']) / 255) * 100,
+                                                ) + 8,
+                                            ) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats['special-attack']}
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        width={
+                                            String(
+                                                Math.ceil((Number(pokemonDetail?.stats['special-attack']) / 255) * 100),
+                                            ) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats['special-attack']}
+                                    </Box>
+                                )}
+                            </Box>
+                            <Box width="100%" bg="gray.300">
+                                {Math.ceil((Number(pokemonDetail?.stats['special-defense']) / 255) * 100) <= 10 ? (
+                                    <Box
+                                        width={
+                                            String(
+                                                Math.ceil(
+                                                    (Number(pokemonDetail?.stats['special-defense']) / 255) * 100,
+                                                ) + 8,
+                                            ) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats['special-defense']}
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        width={
+                                            String(
+                                                Math.ceil(
+                                                    (Number(pokemonDetail?.stats['special-defense']) / 255) * 100,
+                                                ),
+                                            ) + '%'
+                                        }
+                                        bg="teal.200"
+                                    >
+                                        {pokemonDetail?.stats['special-defense']}
+                                    </Box>
+                                )}
+                            </Box>
+                        </Stack>
+                    </GridItem>
+                </Grid>
                 <Flex textAlign="left" marginTop="15px" marginBottom="15px">
                     <Box>
                         <b>{pokemonDetail?.genus}</b>
