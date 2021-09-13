@@ -31,7 +31,7 @@ function PokemonDetailPage() {
     }, []);
 
     return (
-        <Container data-testid="detail container">
+        <Container data-testid="detail container" minH="100vh">
             <Flex paddingBottom="15px">
                 <IconButton
                     aria-label="left-arrow"

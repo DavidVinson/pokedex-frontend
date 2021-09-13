@@ -19,7 +19,14 @@ function PokemonDetailPageSmall() {
     }, []);
 
     return (
-        <Container data-testid="detail container">
+        <Container
+            data-testid="detail container"
+            height="100vh"
+            w="100%"
+            bg="lightseagreen"
+            paddingLeft="10px"
+            paddingRight="10px"
+        >
             <Flex>
                 <IconButton
                     aria-label="left-arrow"
@@ -229,7 +236,7 @@ function PokemonDetailPageSmall() {
                         </Stack>
                     </GridItem>
                 </Grid>
-                <Flex textAlign="left" marginTop="15px" marginBottom="15px">
+                <Flex textAlign="left" marginTop="15px" marginBottom="10px">
                     <Box>
                         <b>{pokemonDetail?.genus}</b>
                     </Box>

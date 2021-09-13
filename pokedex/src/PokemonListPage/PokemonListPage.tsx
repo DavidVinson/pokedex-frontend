@@ -86,7 +86,7 @@ function PokemonListPage() {
     };
 
     return (
-        <Container height="100%" minH="100vh">
+        <Container height="100%" minH="100vh" data-textid="list container" bg="lightseagreen">
             {isLargerThan480 ? (
                 <Flex justifyContent="center" paddingBottom="5%">
                     {startPage !== params.pageNum ? (
@@ -190,7 +190,7 @@ function PokemonListPage() {
                 </Flex>
             )}
 
-            <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
+            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
                 {pokemonList?.length === 0 ? (
                     <Box columns={2} justifyContent="center" cursor="pointer" bg="white" borderRadius="sm">
                         Oops...No pokemon found
