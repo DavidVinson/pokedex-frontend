@@ -78,7 +78,7 @@ function PokemonDetailPageSmall() {
                         ))}
                     </Box>
                 </Flex>
-                <Divider paddingTop="5px" />
+                <Divider paddingTop="15px" />
                 <Grid templateColumns="repeat(4, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
                     <GridItem colSpan={1}>
                         <Stack>

@@ -50,11 +50,11 @@ function PokemonDetailPage() {
 
             <Container bg="white">
                 <Flex>
-                    <Box paddingTop="5px">
+                    <Box paddingTop="8px">
                         <b>{pokemonDetail?.name}</b> #{pokeID}
                     </Box>
                     <Spacer />
-                    <Box>
+                    <Box paddingTop="5px">
                         {pokemonDetail?.types.map((type) => (
                             <Box
                                 key={type}
@@ -79,7 +79,7 @@ function PokemonDetailPage() {
                         ))}
                     </Box>
                 </Flex>
-                <Divider paddingTop="5px" />
+                <Divider paddingTop="15px" />
                 <Grid templateColumns="repeat(6, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
                     <GridItem rowSpan={1} colSpan={2}>
                         <Flex justifyContent="center" data-testid="poke image" w="100%">
