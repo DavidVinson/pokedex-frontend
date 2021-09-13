@@ -251,19 +251,17 @@ function PokemonDetailPageSmall() {
                         </h4>
                     </ProfileHeading>
                 </Flex>
-                <Flex textAlign="left" paddingBottom="15px">
-                    <Box padding="5px">
-                        <b>Height:</b> {pokemonDetail?.height} m
-                    </Box>
-                    <Box padding="5px">
-                        <b>Weight:</b> {pokemonDetail?.weight} kg
-                    </Box>
-                    <Box>
-                        <ProfileStat>
-                            <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
-                        </ProfileStat>
-                    </Box>
-                </Flex>
+                <Box padding="5px">
+                    <b>Height:</b> {pokemonDetail?.height} m
+                </Box>
+                <Box padding="5px">
+                    <b>Weight:</b> {pokemonDetail?.weight} kg
+                </Box>
+                <Box>
+                    <ProfileStat>
+                        <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
+                    </ProfileStat>
+                </Box>
                 <Flex paddingBottom="15px">
                     <Box>
                         <ProfileStat>

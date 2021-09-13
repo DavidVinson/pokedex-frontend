@@ -25,6 +25,7 @@ import {
     GridItem,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { MessageBox } from 'styleComps';
 
 function PokemonListPage() {
     const history = useHistory();
@@ -192,9 +193,7 @@ function PokemonListPage() {
 
             <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
                 {pokemonList?.length === 0 ? (
-                    <Box columns={2} justifyContent="center" cursor="pointer" bg="white" borderRadius="sm">
-                        Oops...No pokemon found
-                    </Box>
+                    <MessageBox>Oops! No Pokemon Found</MessageBox>
                 ) : (
                     pokemonList?.map((poke) => (
                         <Box
