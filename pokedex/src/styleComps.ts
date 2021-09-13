@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { Box, BoxProps } from '@chakra-ui/layout';
+import { motion } from 'framer-motion';
 
 export const ProfileHeading = styled.div`
     background-color: lightseagreen;
@@ -28,3 +30,5 @@ export const MessageBox = styled.div`
     bg: white;
     borderradius: sm;
 `;
+
+export const MotionBox = motion<BoxProps>(Box);

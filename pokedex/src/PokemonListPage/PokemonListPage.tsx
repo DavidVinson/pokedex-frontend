@@ -10,22 +10,18 @@ import {
     Center,
     IconButton,
     Input,
-    InputGroup,
     InputLeftElement,
     InputRightElement,
     Flex,
-    Spacer,
     Container,
     Divider,
     Image,
     CloseButton,
     FormControl,
-    HStack,
-    Grid,
-    GridItem,
     useMediaQuery,
 } from '@chakra-ui/react';
 import { MessageBox } from 'styleComps';
+import { MotionBox } from 'styleComps';
 
 function PokemonListPage() {
     const history = useHistory();
@@ -37,7 +33,6 @@ function PokemonListPage() {
     const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
     const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
-    const [isSmallerThan480] = useMediaQuery('(max-width: 480px)');
 
     useEffect(() => {
         getPokemonInfo(params).then((response) => {
@@ -203,6 +198,7 @@ function PokemonListPage() {
                                 scrollSnapMarginLeft: '3',
                                 backgroundColor: 'lightgray',
                             }}
+                            whileHover={{ scale: 1.1 }}
                             bg="white"
                             borderRadius="sm"
                             onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
