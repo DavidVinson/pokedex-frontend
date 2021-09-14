@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { PokemonListInterface, PokemonDataLinksInterface, UrlParams, PokemonMetaInterface } from 'customTypes';
+import { PokemonListInterface, PokemonDataLinksInterface, UrlParams, PokemonMetaInterface } from 'Types';
 import { getPokemonInfo, findPokemon, getPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {

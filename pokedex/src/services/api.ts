@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { AxiosResponse } from 'axios';
-import { UrlParams, ApiDataInterface } from 'customTypes';
+import { UrlParams, ApiDataInterface } from 'Types';
 import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
 
 export const getPokemonInfo = async (params?: UrlParams): Promise<AxiosResponse<ApiDataInterface>> => {

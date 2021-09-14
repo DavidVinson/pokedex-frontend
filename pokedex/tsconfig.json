@@ -8,7 +8,7 @@
       "esnext"
     ],
     "typeRoots": [
-      "src/customTypes",
+      "src/Types",
       "node_modules/@types"
     ],
     "allowJs": true,

@@ -15,7 +15,7 @@ import {
     GridItem,
 } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { PokemonDetailInterface } from 'customTypes';
+import { PokemonDetailInterface } from 'Types';
 import { getPageDetail } from 'services/api';
 import { ProfileHeading, ProfileStat } from 'styleComps';
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { ChakraProvider } from '@chakra-ui/react';
-import theme from './customTheme';
+import theme from './Themes/customTheme';
 
 ReactDOM.render(
     <ChakraProvider theme={theme}>

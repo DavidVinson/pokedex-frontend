@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { IconButton, Flex, Spacer, Container, Divider, Box, Image, Stack, Grid, GridItem } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
-import { PokemonDetailInterface } from 'customTypes';
+import { PokemonDetailInterface } from 'Types';
 import { ProfileHeading, ProfileStat } from 'styleComps';
 import { getPageDetail } from 'services/api';
 
