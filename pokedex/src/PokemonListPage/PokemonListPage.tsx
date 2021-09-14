@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { PokemonListInterface, PokemonLinksInterface, UrlParams } from 'customTypes';
-import { getPokemonInfo, findPokemon, nextPage } from 'services/api';
+import { PokemonListInterface, PokemonDataLinksInterface, UrlParams, PokemonMetaInterface } from 'customTypes';
+import { getPokemonInfo, findPokemon, getPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {
     SimpleGrid,
@@ -10,45 +10,44 @@ import {
     Center,
     IconButton,
     Input,
-    InputGroup,
     InputLeftElement,
     InputRightElement,
     Flex,
-    Spacer,
     Container,
     Divider,
     Image,
     CloseButton,
     FormControl,
+    useMediaQuery,
 } from '@chakra-ui/react';
+import { MessageBox } from 'styleComps';
+import { MotionBox } from 'styleComps';
 
 function PokemonListPage() {
     const history = useHistory();
     const params: UrlParams = useParams();
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>();
-    const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
-    const [currentPage, setCurrentPage] = useState();
-    const [lastPage, setLastPage] = useState();
+    const [pokemonDataLinks, setPokemonDataLinks] = useState<PokemonDataLinksInterface>();
+    const [pokemonMeta, setPokemonMeta] = useState<PokemonMetaInterface>();
     const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
+    const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
 
     useEffect(() => {
         getPokemonInfo(params).then((response) => {
             setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
-            setLastPage(response.data.meta.last_page);
+            setPokemonDataLinks(response.data.links);
+            setPokemonMeta(response.data.meta);
         });
     }, []);
 
-    const nextPageNav = (pagination: string | null | undefined) => {
+    const pageNav = (pagination: string | null | undefined) => {
         const page = String(pagination);
         const strIndex = page.indexOf('=');
         const pageNum = page.slice(strIndex + 1);
-        nextPage(page, pageNum, pokemonNameSearch).then((response) => {
+        getPage(page, pageNum, pokemonNameSearch).then((response) => {
             setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
+            setPokemonDataLinks(response.data.links);
             history.push(`/page/${pageNum}`);
         });
     };
@@ -61,8 +60,7 @@ function PokemonListPage() {
         if (event.key === 'Enter') {
             findPokemon(pokemonNameSearch).then((response) => {
                 setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setLastPage(response.data.meta.last_page);
+                setPokemonDataLinks(response.data.links);
                 history.push(`/page/${startPage}`);
             });
         }
@@ -72,109 +70,166 @@ function PokemonListPage() {
         setPokemonNameSearch('');
         getPokemonInfo(params).then((response) => {
             setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
-            setLastPage(response.data.meta.last_page);
+            setPokemonDataLinks(response.data.links);
         });
     };
 
     return (
-        <Container height="100%">
-            <Flex paddingTop="15px" paddingBottom="15px">
-                {startPage !== params.pageNum && (
-                    <IconButton
-                        aria-label="left-arrow"
-                        icon={<FaArrowLeft color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => nextPageNav(pokemonData?.prev)}
-                    />
-                )}
-                <Spacer />
-                <FormControl id="text">
-                    <InputGroup paddingLeft="10px" paddingRight="10px">
-                        <InputLeftElement pointerEvents="none" paddingLeft="10px" paddingTop="5px">
-                            <FaSearch color="white" />
-                        </InputLeftElement>
-                        <Input
-                            color="teal.800"
-                            type="text"
+        <Container height="100%" minH="100vh" data-textid="list container" bg="lightseagreen">
+            {isLargerThan480 ? (
+                <Flex justifyContent="center" paddingBottom="5%">
+                    {startPage !== params.pageNum ? (
+                        <IconButton
+                            aria-label="left-arrow"
+                            icon={<FaArrowLeft color="white" />}
+                            isRound={true}
                             size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonDataLinks?.prev)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                    <FormControl id="text" data-textid="form input" marginLeft="10%" marginRight="10%">
+                        {pokemonNameSearch ? null : (
+                            <InputLeftElement pointerEvents="none" paddingTop="1.25rem" paddingLeft="1rem">
+                                <FaSearch color="white" />
+                            </InputLeftElement>
+                        )}
+                        <Input
+                            color="white"
+                            bg="teal.400"
+                            type="text"
+                            fontWeight="bold"
+                            fontSize="2rem"
+                            w="100%"
+                            h="60px"
+                            justifyContent="center"
                             value={pokemonNameSearch}
                             placeholder="Pokédex"
-                            _placeholder={{ color: 'white', textAlign: 'center' }}
+                            _placeholder={{ color: 'teal', textAlign: 'center', fontWeight: 'bold' }}
                             onChange={(event) => handleChange(event)}
                             onKeyPress={(event) => submitSearch(event)}
                         />
 
-                        <InputRightElement paddingRight="10px" paddingTop="5px" marginRight="5px">
+                        <InputRightElement paddingRight="10px" paddingTop="1.25rem" paddingLeft="1rem">
                             {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
                         </InputRightElement>
-                    </InputGroup>
-                </FormControl>
+                    </FormControl>
 
-                <Spacer />
+                    {pokemonMeta?.current_page !== pokemonMeta?.last_page ? (
+                        <IconButton
+                            aria-label="right-arrow"
+                            icon={<FaArrowRight color="white" />}
+                            isRound={true}
+                            size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonDataLinks?.next)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                </Flex>
+            ) : (
+                <Flex justifyContent="center" paddingBottom="5%">
+                    {startPage !== params.pageNum ? (
+                        <IconButton
+                            aria-label="left-arrow"
+                            icon={<FaArrowLeft color="white" />}
+                            isRound={true}
+                            size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonDataLinks?.prev)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                    <FormControl id="text" data-textid="form input" marginLeft="10%" marginRight="10%">
+                        <Input
+                            color="white"
+                            type="text"
+                            fontWeight="bold"
+                            w="100%"
+                            h="60px"
+                            justifyContent="center"
+                            value={pokemonNameSearch}
+                            placeholder="Search Pokédex"
+                            _placeholder={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}
+                            onChange={(event) => handleChange(event)}
+                            onKeyPress={(event) => submitSearch(event)}
+                        />
 
-                {currentPage !== lastPage && (
-                    <IconButton
-                        aria-label="right-arrow"
-                        icon={<FaArrowRight color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => nextPageNav(pokemonData?.next)}
-                    />
+                        <InputRightElement paddingRight="10px" paddingTop="1.25rem" paddingLeft="1rem">
+                            {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
+                        </InputRightElement>
+                    </FormControl>
+
+                    {pokemonMeta?.current_page !== pokemonMeta?.last_page ? (
+                        <IconButton
+                            aria-label="right-arrow"
+                            icon={<FaArrowRight color="white" />}
+                            isRound={true}
+                            size="lg"
+                            bgColor="teal.500"
+                            onClick={() => pageNav(pokemonDataLinks?.next)}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                </Flex>
+            )}
+
+            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
+                {pokemonList?.length === 0 ? (
+                    <MessageBox>Oops! No Pokemon Found</MessageBox>
+                ) : (
+                    pokemonList?.map((poke) => (
+                        <Box
+                            key={poke.id}
+                            cursor="pointer"
+                            _hover={{
+                                scrollSnapMarginLeft: '3',
+                                backgroundColor: 'lightgray',
+                            }}
+                            whileHover={{ scale: 1.1 }}
+                            bg="white"
+                            borderRadius="sm"
+                            onClick={() => history.push(`/detail/${pokemonMeta?.current_page}/${poke.id}`)}
+                        >
+                            <Box textAlign="left" padding="5px">
+                                <b>{poke.name}</b>
+                            </Box>
+                            <Divider />
+
+                            <Center>
+                                <Image src={poke.image} alt={poke.name} w="75%" />
+                            </Center>
+                            <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
+                                {poke.types.map((type) => (
+                                    <Box
+                                        key={type}
+                                        border="1px solid"
+                                        borderColor={`types.${type}.border`}
+                                        borderRadius="md"
+                                        color={`types.${type}.font`}
+                                        bgColor={`types.${type}.bg`}
+                                        width="fit-content"
+                                        justifyContent="center"
+                                        minW="50px"
+                                        padding="5px"
+                                        lineHeight="8px"
+                                        fontSize="8px"
+                                        display="inline-flex"
+                                        marginLeft="5px"
+                                        textTransform="uppercase"
+                                    >
+                                        {type}
+                                    </Box>
+                                ))}
+                            </Box>
+                        </Box>
+                    ))
                 )}
-            </Flex>
-
-            <SimpleGrid columns={{ sm: 2, md: 3 }} spacing={4}>
-                {pokemonList?.map((poke) => (
-                    <Box
-                        key={poke.id}
-                        cursor="pointer"
-                        _hover={{
-                            // scale: '1.1',
-                            scrollSnapMarginLeft: '3',
-                            backgroundColor: 'lightgray',
-                        }}
-                        bg="white"
-                        borderRadius="sm"
-                        onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
-                    >
-                        <Box textAlign="left" padding="5px">
-                            <b>{poke.name}</b>
-                        </Box>
-                        <Divider />
-
-                        <Center>
-                            <Image src={poke.image} alt={poke.name} />
-                        </Center>
-                        <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
-                            {poke.types.map((type) => (
-                                <Box
-                                    key={type}
-                                    borderRadius="md"
-                                    color={`types.${type}.font`}
-                                    bgColor={`types.${type}.bg`}
-                                    borderColor={`types.${type}.border`}
-                                    border="1px solid"
-                                    width="fit-content"
-                                    textAlign="center"
-                                    minW="50px"
-                                    padding="5px"
-                                    lineHeight="8px"
-                                    fontSize="8px"
-                                    display="inline-flex"
-                                    marginLeft="5px"
-                                    textTransform="uppercase"
-                                >
-                                    {type}
-                                </Box>
-                            ))}
-                        </Box>
-                    </Box>
-                ))}
             </SimpleGrid>
         </Container>
     );

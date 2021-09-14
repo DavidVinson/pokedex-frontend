@@ -4,8 +4,8 @@ export interface HeaderPropsInterface {
 
 export interface ApiDataInterface {
     data: PokemonListInterface[];
-    links: PokemonLinksInterface;
-    meta: any;
+    links: PokemonDataLinksInterface;
+    meta: PokemonMetaInterface;
 }
 
 export interface PokemonDetailInterface {
@@ -36,7 +36,7 @@ export interface PokemonListInterface {
     types: string[];
 }
 
-export interface PokemonLinksInterface {
+export interface PokemonDataLinksInterface {
     first: string;
     last: string;
     prev: null | string;
