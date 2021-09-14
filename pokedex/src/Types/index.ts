@@ -1,7 +1,3 @@
-export interface HeaderPropsInterface {
-    title: string;
-}
-
 export interface ApiDataInterface {
     data: PokemonListInterface[];
     links: PokemonDataLinksInterface;
@@ -39,7 +35,7 @@ export interface PokemonListInterface {
 export interface PokemonDataLinksInterface {
     first: string;
     last: string;
-    prev: null | string;
+    prev: string;
     next: string;
 }
 
@@ -54,10 +50,5 @@ export interface PokemonMetaInterface {
 }
 
 export interface UrlParams {
-    name: string | undefined;
-    pageNum: string;
-}
-
-export interface ApiPropsInterface {
-    pokedexApi: string;
+    pageNum?: string;
 }
