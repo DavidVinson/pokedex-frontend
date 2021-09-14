@@ -31,7 +31,7 @@ function PokemonDetailPage() {
     }, []);
 
     return (
-        <Container data-testid="detail container" minH="100vh">
+        <Container minH="100vh" bg="lightseagreen">
             <Flex paddingBottom="15px">
                 <IconButton
                     aria-label="left-arrow"
@@ -50,11 +50,11 @@ function PokemonDetailPage() {
 
             <Container bg="white">
                 <Flex>
-                    <Box paddingTop="8px">
+                    <Box paddingTop="3%">
                         <b>{pokemonDetail?.name}</b> #{pokeID}
                     </Box>
                     <Spacer />
-                    <Box paddingTop="5px">
+                    <Box paddingTop="2%">
                         {pokemonDetail?.types.map((type) => (
                             <Box
                                 key={type}
@@ -70,8 +70,8 @@ function PokemonDetailPage() {
                                 justifyContent="center"
                                 minW="50px"
                                 display="inline-flex"
-                                lineHeight="8px"
-                                fontSize="8px"
+                                lineHeight="10px"
+                                fontSize="10px"
                                 textTransform="uppercase"
                             >
                                 {type}

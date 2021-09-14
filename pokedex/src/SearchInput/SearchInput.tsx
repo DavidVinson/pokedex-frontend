@@ -1,14 +1,13 @@
 import React from 'react';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Input from '@chakra-ui/react';
 
 function SearchInput() {
     const [query, setQuery] = useState('');
     const history = useHistory();
 
-    function onChange(e: ChangeEvent<HTMLInputElement>) {
-        setQuery(e.target.value);
+    function onChange(event: ChangeEvent<HTMLInputElement>) {
+        setQuery(event.target.value);
     }
 
     useEffect(() => {

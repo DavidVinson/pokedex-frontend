@@ -21,7 +21,6 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 import { MessageBox } from 'styleComps';
-import { MotionBox } from 'styleComps';
 
 function PokemonListPage() {
     const history = useHistory();
@@ -29,7 +28,7 @@ function PokemonListPage() {
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>();
     const [pokemonDataLinks, setPokemonDataLinks] = useState<PokemonDataLinksInterface>();
     const [pokemonMeta, setPokemonMeta] = useState<PokemonMetaInterface>();
-    const [startPage, setStartPage] = useState('1');
+    const [startPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
     const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
 
@@ -41,13 +40,14 @@ function PokemonListPage() {
         });
     }, []);
 
-    const pageNav = (pagination: string | null | undefined) => {
+    const pageNav = (pagination: string | undefined) => {
         const page = String(pagination);
         const strIndex = page.indexOf('=');
         const pageNum = page.slice(strIndex + 1);
         getPage(page, pageNum, pokemonNameSearch).then((response) => {
             setPokemonList(response.data.data);
             setPokemonDataLinks(response.data.links);
+            setPokemonMeta(response.data.meta);
             history.push(`/page/${pageNum}`);
         });
     };
@@ -61,6 +61,8 @@ function PokemonListPage() {
             findPokemon(pokemonNameSearch).then((response) => {
                 setPokemonList(response.data.data);
                 setPokemonDataLinks(response.data.links);
+                setPokemonMeta(response.data.meta);
+
                 history.push(`/page/${startPage}`);
             });
         }
@@ -71,11 +73,12 @@ function PokemonListPage() {
         getPokemonInfo(params).then((response) => {
             setPokemonList(response.data.data);
             setPokemonDataLinks(response.data.links);
+            setPokemonMeta(response.data.meta);
         });
     };
 
     return (
-        <Container height="100%" minH="100vh" data-textid="list container" bg="lightseagreen">
+        <Container height="100%" minH="100vh" bg="lightseagreen" padding="20px">
             {isLargerThan480 ? (
                 <Flex justifyContent="center" paddingBottom="5%">
                     {startPage !== params.pageNum ? (
@@ -90,7 +93,7 @@ function PokemonListPage() {
                     ) : (
                         <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
                     )}
-                    <FormControl id="text" data-textid="form input" marginLeft="10%" marginRight="10%">
+                    <FormControl id="text" marginLeft="10%" marginRight="10%">
                         {pokemonNameSearch ? null : (
                             <InputLeftElement pointerEvents="none" paddingTop="1.25rem" paddingLeft="1rem">
                                 <FaSearch color="white" />
@@ -144,7 +147,7 @@ function PokemonListPage() {
                     ) : (
                         <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
                     )}
-                    <FormControl id="text" data-textid="form input" marginLeft="10%" marginRight="10%">
+                    <FormControl id="text" marginLeft="10%" marginRight="10%">
                         <Input
                             color="white"
                             type="text"
@@ -196,15 +199,15 @@ function PokemonListPage() {
                             borderRadius="sm"
                             onClick={() => history.push(`/detail/${pokemonMeta?.current_page}/${poke.id}`)}
                         >
-                            <Box textAlign="left" padding="5px">
-                                <b>{poke.name}</b>
+                            <Box textAlign="left" padding="5px" fontWeight="bold">
+                                {poke.name}
                             </Box>
                             <Divider />
 
                             <Center>
                                 <Image src={poke.image} alt={poke.name} w="75%" />
                             </Center>
-                            <Box textAlign="right" paddingBottom="10px" paddingRight="10px">
+                            <Box textAlign="right" paddingBottom="15px" paddingRight="15px">
                                 {poke.types.map((type) => (
                                     <Box
                                         key={type}
@@ -217,8 +220,8 @@ function PokemonListPage() {
                                         justifyContent="center"
                                         minW="50px"
                                         padding="5px"
-                                        lineHeight="8px"
-                                        fontSize="8px"
+                                        lineHeight="10px"
+                                        fontSize="10px"
                                         display="inline-flex"
                                         marginLeft="5px"
                                         textTransform="uppercase"

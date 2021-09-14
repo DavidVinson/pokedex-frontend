@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { IconButton, Flex, Spacer, Container, Divider, Box, Image, Stack, Grid, GridItem } from '@chakra-ui/react';
+import { IconButton, Flex, Container, Divider, Box, Image, Stack, Grid, GridItem } from '@chakra-ui/react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'Types';
 import { ProfileHeading, ProfileStat } from 'styleComps';
@@ -19,14 +19,7 @@ function PokemonDetailPageSmall() {
     }, []);
 
     return (
-        <Container
-            data-testid="detail container"
-            height="100vh"
-            w="100%"
-            bg="lightseagreen"
-            paddingLeft="10px"
-            paddingRight="10px"
-        >
+        <Container height="100vh" w="100%" bg="lightseagreen" paddingLeft="10px" paddingRight="10px">
             <Flex>
                 <IconButton
                     aria-label="left-arrow"
@@ -69,8 +62,8 @@ function PokemonDetailPageSmall() {
                                 justifyContent="center"
                                 minW="50px"
                                 display="inline-flex"
-                                lineHeight="8px"
-                                fontSize="8px"
+                                lineHeight="10px"
+                                fontSize="10px"
                                 textTransform="uppercase"
                             >
                                 {type}
