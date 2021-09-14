@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { PokemonListInterface, PokemonLinksInterface, UrlParams } from 'customTypes';
+import { PokemonListInterface, PokemonDataLinksInterface, UrlParams, PokemonMetaInterface } from 'customTypes';
 import { getPokemonInfo, findPokemon, getPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {
@@ -27,9 +27,8 @@ function PokemonListPage() {
     const history = useHistory();
     const params: UrlParams = useParams();
     const [pokemonList, setPokemonList] = useState<PokemonListInterface[]>();
-    const [pokemonData, setPokemonData] = useState<PokemonLinksInterface>();
-    const [currentPage, setCurrentPage] = useState();
-    const [lastPage, setLastPage] = useState();
+    const [pokemonDataLinks, setPokemonDataLinks] = useState<PokemonDataLinksInterface>();
+    const [pokemonMeta, setPokemonMeta] = useState<PokemonMetaInterface>();
     const [startPage, setStartPage] = useState('1');
     const [pokemonNameSearch, setPokemonNameSearch] = useState('');
     const [isLargerThan480] = useMediaQuery('(min-width: 480px)');
@@ -37,9 +36,8 @@ function PokemonListPage() {
     useEffect(() => {
         getPokemonInfo(params).then((response) => {
             setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
-            setLastPage(response.data.meta.last_page);
+            setPokemonDataLinks(response.data.links);
+            setPokemonMeta(response.data.meta);
         });
     }, []);
 
@@ -49,8 +47,7 @@ function PokemonListPage() {
         const pageNum = page.slice(strIndex + 1);
         getPage(page, pageNum, pokemonNameSearch).then((response) => {
             setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
+            setPokemonDataLinks(response.data.links);
             history.push(`/page/${pageNum}`);
         });
     };
@@ -63,9 +60,7 @@ function PokemonListPage() {
         if (event.key === 'Enter') {
             findPokemon(pokemonNameSearch).then((response) => {
                 setPokemonList(response.data.data);
-                setPokemonData(response.data.links);
-                setCurrentPage(response.data.meta.current_page);
-                setLastPage(response.data.meta.last_page);
+                setPokemonDataLinks(response.data.links);
                 history.push(`/page/${startPage}`);
             });
         }
@@ -75,9 +70,7 @@ function PokemonListPage() {
         setPokemonNameSearch('');
         getPokemonInfo(params).then((response) => {
             setPokemonList(response.data.data);
-            setPokemonData(response.data.links);
-            setCurrentPage(response.data.meta.current_page);
-            setLastPage(response.data.meta.last_page);
+            setPokemonDataLinks(response.data.links);
         });
     };
 
@@ -92,7 +85,7 @@ function PokemonListPage() {
                             isRound={true}
                             size="lg"
                             bgColor="teal.500"
-                            onClick={() => pageNav(pokemonData?.prev)}
+                            onClick={() => pageNav(pokemonDataLinks?.prev)}
                         />
                     ) : (
                         <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
@@ -124,14 +117,14 @@ function PokemonListPage() {
                         </InputRightElement>
                     </FormControl>
 
-                    {currentPage !== lastPage ? (
+                    {pokemonMeta?.current_page !== pokemonMeta?.last_page ? (
                         <IconButton
                             aria-label="right-arrow"
                             icon={<FaArrowRight color="white" />}
                             isRound={true}
                             size="lg"
                             bgColor="teal.500"
-                            onClick={() => pageNav(pokemonData?.next)}
+                            onClick={() => pageNav(pokemonDataLinks?.next)}
                         />
                     ) : (
                         <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
@@ -146,7 +139,7 @@ function PokemonListPage() {
                             isRound={true}
                             size="lg"
                             bgColor="teal.500"
-                            onClick={() => pageNav(pokemonData?.prev)}
+                            onClick={() => pageNav(pokemonDataLinks?.prev)}
                         />
                     ) : (
                         <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
@@ -171,14 +164,14 @@ function PokemonListPage() {
                         </InputRightElement>
                     </FormControl>
 
-                    {currentPage !== lastPage ? (
+                    {pokemonMeta?.current_page !== pokemonMeta?.last_page ? (
                         <IconButton
                             aria-label="right-arrow"
                             icon={<FaArrowRight color="white" />}
                             isRound={true}
                             size="lg"
                             bgColor="teal.500"
-                            onClick={() => pageNav(pokemonData?.next)}
+                            onClick={() => pageNav(pokemonDataLinks?.next)}
                         />
                     ) : (
                         <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
@@ -201,7 +194,7 @@ function PokemonListPage() {
                             whileHover={{ scale: 1.1 }}
                             bg="white"
                             borderRadius="sm"
-                            onClick={() => history.push(`/detail/${currentPage}/${poke.id}`)}
+                            onClick={() => history.push(`/detail/${pokemonMeta?.current_page}/${poke.id}`)}
                         >
                             <Box textAlign="left" padding="5px">
                                 <b>{poke.name}</b>

@@ -3,23 +3,16 @@ import { AxiosResponse } from 'axios';
 import { UrlParams, ApiDataInterface } from 'customTypes';
 import { POKEDEX_API } from 'ConstantVariables/ConstantVariables';
 
-export const getPokemonInfo = async (params: UrlParams): Promise<AxiosResponse<ApiDataInterface>> => {
-    const response = await axios.get(POKEDEX_API, {
-        params: { page: params.pageNum },
-    });
-    return response;
+export const getPokemonInfo = async (params?: UrlParams): Promise<AxiosResponse<ApiDataInterface>> => {
+    return await axios.get(POKEDEX_API, { params: { page: params?.pageNum } });
 };
 
 export const findPokemon = async (name: string, pageNum?: string): Promise<AxiosResponse<ApiDataInterface>> => {
-    const response = await axios.get(POKEDEX_API, {
-        params: { name: name, page: pageNum },
-    });
-    return response;
+    return await axios.get(POKEDEX_API, { params: { name: name, page: pageNum } });
 };
 
 export const getPageDetail = async (pokeID: string) => {
-    const response = await axios.get(`${POKEDEX_API}/${pokeID}`);
-    return response;
+    return await axios.get(`${POKEDEX_API}/${pokeID}`);
 };
 
 export const getPage = async (
