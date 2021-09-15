@@ -52,3 +52,7 @@ export interface PokemonMetaInterface {
 export interface UrlParams {
     pageNum?: string;
 }
+
+export interface Props {
+    props: ApiDataInterface | undefined;
+}

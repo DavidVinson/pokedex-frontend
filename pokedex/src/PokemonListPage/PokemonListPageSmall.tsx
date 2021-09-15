@@ -5,22 +5,18 @@ import { UrlParams, ApiDataInterface } from 'Types';
 import { getPokemonInfo, findPokemon, getPage } from 'services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import {
-    SimpleGrid,
     Box,
-    Center,
     IconButton,
     Input,
     InputLeftElement,
     InputRightElement,
     Flex,
     Container,
-    Divider,
-    Image,
     CloseButton,
     FormControl,
     Spacer,
 } from '@chakra-ui/react';
-import { MessageBox } from 'styleComps';
+import PokeGrid from 'PokeGrid/PokeGrid';
 
 function PokemonListPageSmall() {
     const history = useHistory();
@@ -121,53 +117,7 @@ function PokemonListPageSmall() {
                     )}
                 </Box>
             </Flex>
-
-            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
-                {pokemonInfo?.data.length === 0 ? (
-                    <MessageBox>Oops! No Pokemon Found</MessageBox>
-                ) : (
-                    pokemonInfo?.data.map((poke) => (
-                        <Box
-                            key={poke.id}
-                            bg="white"
-                            borderRadius="sm"
-                            onClick={() => history.push(`/detail/${pokemonInfo?.meta.current_page}/${poke.id}`)}
-                        >
-                            <Box textAlign="left" padding="5px" fontWeight="bold">
-                                {poke.name}
-                            </Box>
-                            <Divider />
-
-                            <Center>
-                                <Image src={poke.image} alt={poke.name} w="75%" />
-                            </Center>
-                            <Box textAlign="right" paddingBottom="15px" paddingRight="15px">
-                                {poke.types.map((type) => (
-                                    <Box
-                                        key={type}
-                                        border="1px solid"
-                                        borderColor={`types.${type}.border`}
-                                        borderRadius="md"
-                                        color={`types.${type}.font`}
-                                        bgColor={`types.${type}.bg`}
-                                        width="fit-content"
-                                        justifyContent="center"
-                                        minW="50px"
-                                        padding="5px"
-                                        lineHeight="10px"
-                                        fontSize="10px"
-                                        display="inline-flex"
-                                        marginLeft="5px"
-                                        textTransform="uppercase"
-                                    >
-                                        {type}
-                                    </Box>
-                                ))}
-                            </Box>
-                        </Box>
-                    ))
-                )}
-            </SimpleGrid>
+            <PokeGrid props={pokemonInfo} />
         </Container>
     );
 }
