@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { ApiDataInterface, PokemonListInterface, Props } from 'Types';
+import { PokemonListInterface, GridProps } from 'Types';
 import { SimpleGrid, Box, Center, Divider, Image } from '@chakra-ui/react';
 import { MessageBox } from 'styleComps';
 
-function PokeGrid({ props }: Props) {
+function PokeGrid({ props }: GridProps) {
     const history = useHistory();
 
     return (

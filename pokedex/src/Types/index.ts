@@ -53,6 +53,10 @@ export interface UrlParams {
     pageNum?: string;
 }
 
-export interface Props {
+export interface GridProps {
     props: ApiDataInterface | undefined;
+}
+
+export interface StatsProps {
+    props: PokemonDetailInterface | undefined;
 }
