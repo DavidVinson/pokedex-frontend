@@ -129,11 +129,6 @@ function PokemonListPageSmall() {
                     pokemonInfo?.data.map((poke) => (
                         <Box
                             key={poke.id}
-                            cursor="pointer"
-                            _hover={{
-                                scrollSnapMarginLeft: '3',
-                                backgroundColor: 'lightgray',
-                            }}
                             bg="white"
                             borderRadius="sm"
                             onClick={() => history.push(`/detail/${pokemonInfo?.meta.current_page}/${poke.id}`)}

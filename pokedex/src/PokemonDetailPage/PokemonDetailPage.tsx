@@ -17,7 +17,7 @@ import {
 import { FaArrowLeft } from 'react-icons/fa';
 import { PokemonDetailInterface } from 'Types';
 import { getPageDetail } from 'services/api';
-import { ProfileHeading, ProfileStat } from 'styleComps';
+import { ProfileHeading } from 'styleComps';
 
 function PokemonDetailPage() {
     const history = useHistory();
@@ -32,7 +32,7 @@ function PokemonDetailPage() {
 
     return (
         <Container minH="100vh" bg="lightseagreen">
-            <Flex paddingBottom="15px">
+            <Flex paddingBottom="5%">
                 <IconButton
                     aria-label="left-arrow"
                     icon={<FaArrowLeft color="lightseagreen" />}
@@ -79,7 +79,7 @@ function PokemonDetailPage() {
                         ))}
                     </Box>
                 </Flex>
-                <Divider paddingTop="15px" />
+                <Divider paddingTop="3%" />
                 <Grid templateColumns="repeat(6, 1fr)" templateRows="repeat(1, 1fr)" marginTop="5%">
                     <GridItem rowSpan={1} colSpan={2}>
                         <Flex justifyContent="center" data-testid="poke image" w="100%">
@@ -243,43 +243,43 @@ function PokemonDetailPage() {
                         </Stack>
                     </GridItem>
                 </Grid>
-                <Flex textAlign="left" marginTop="15px" marginBottom="15px">
+                <Flex textAlign="left" marginTop="5%" marginBottom="3%" paddingLeft="1%">
                     <Box>
                         <b>{pokemonDetail?.genus}</b>
                     </Box>
                 </Flex>
 
-                <Flex textAlign="left">
+                <Flex textAlign="left" paddingLeft="1%">
                     <Box>{pokemonDetail?.description}</Box>
                 </Flex>
-
-                <Flex marginTop="15px" marginBottom="15px">
+                <Flex marginTop="5%">
                     <ProfileHeading>
-                        <h4>
-                            <b>Profile</b>
-                        </h4>
+                        <h4>Profile</h4>
                     </ProfileHeading>
                 </Flex>
-                <Flex textAlign="left" paddingBottom="15px">
-                    <Box padding="5px">
-                        <b>Height:</b> {pokemonDetail?.height} m
-                    </Box>
-                    <Box padding="5px">
-                        <b>Weight:</b> {pokemonDetail?.weight} kg
-                    </Box>
-                    <Box>
-                        <ProfileStat>
-                            <b>Egg Groups:</b> {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
-                        </ProfileStat>
-                    </Box>
-                </Flex>
-                <Flex paddingBottom="15px">
-                    <Box>
-                        <ProfileStat>
-                            <b>Abilities:</b> {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
-                        </ProfileStat>
-                    </Box>
-                </Flex>
+
+                <Grid templateColumns="repeat(2, 1fr)" templateRows="repeat(1, 1fr)" padding="3%" flexGrow={1}>
+                    <GridItem>
+                        <Stack>
+                            <Box fontWeight="bold">Height:</Box>
+                            <Box fontWeight="bold">Weight:</Box>
+                            <Box fontWeight="bold">Egg Groups:</Box>
+                            <Box fontWeight="bold">Abilities:</Box>
+                        </Stack>
+                    </GridItem>
+                    <GridItem>
+                        <Stack>
+                            <Box justifyContent="right"> {pokemonDetail?.height} m</Box>
+                            <Box justifyContent="right"> {pokemonDetail?.weight} m</Box>
+                            <Box textTransform="capitalize">
+                                {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
+                            </Box>
+                            <Box textTransform="capitalize">
+                                {pokemonDetail?.abilities.map((ability) => ability).join(', ')}
+                            </Box>
+                        </Stack>
+                    </GridItem>
+                </Grid>
             </Container>
         </Container>
     );
