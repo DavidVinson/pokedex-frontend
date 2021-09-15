@@ -12,11 +12,6 @@ export const ProfileHeading = styled.div`
     font-weight: bold;
 `;
 
-export const Page = styled.div`
-    background-color: lightseagreen;
-    padding: 20px;
-`;
-
 export const MessageBox = styled.div`
     color: white;
     justifycontent: center;
