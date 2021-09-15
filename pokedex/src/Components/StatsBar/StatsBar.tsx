@@ -1,10 +1,8 @@
 import React from 'react';
 import { Box, Stack } from '@chakra-ui/react';
-import { PokemonDetailInterface, StatsProps } from 'Types';
+import { StatsProps } from 'Types';
 
 function StatsBar({ props }: StatsProps) {
-    console.log('props', props);
-
     return (
         <Stack>
             <Box width="100%" bg="gray.300">
