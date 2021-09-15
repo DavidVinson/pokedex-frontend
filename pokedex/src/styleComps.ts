@@ -30,5 +30,3 @@ export const MessageBox = styled.div`
     bg: white;
     borderradius: sm;
 `;
-
-export const MotionBox = motion<BoxProps>(Box);

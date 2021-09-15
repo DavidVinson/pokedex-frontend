@@ -18,10 +18,11 @@ import {
     Image,
     CloseButton,
     FormControl,
+    Spacer,
 } from '@chakra-ui/react';
 import { MessageBox } from 'styleComps';
 
-function PokemonListPage() {
+function PokemonListPageSmall() {
     const history = useHistory();
     const params: UrlParams = useParams();
     const [startPage] = useState('1');
@@ -65,19 +66,7 @@ function PokemonListPage() {
     return (
         <Container height="100%" minH="100vh" bg="lightseagreen" padding="20px">
             <Flex justifyContent="center" paddingBottom="5%">
-                {startPage !== params.pageNum ? (
-                    <IconButton
-                        aria-label="left-arrow"
-                        icon={<FaArrowLeft color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => pageNav(pokemonInfo?.links.prev ?? 'null')}
-                    />
-                ) : (
-                    <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
-                )}
-                <FormControl id="text" marginLeft="10%" marginRight="10%">
+                <FormControl id="text" w="100%">
                     {pokemonNameSearch ? null : (
                         <InputLeftElement pointerEvents="none" paddingTop="1.25rem" paddingLeft="1rem">
                             <FaSearch color="white" />
@@ -85,16 +74,15 @@ function PokemonListPage() {
                     )}
                     <Input
                         color="white"
-                        bg="teal.400"
                         type="text"
+                        inputMode="search"
                         fontWeight="bold"
-                        fontSize="2rem"
                         w="100%"
                         h="60px"
                         justifyContent="center"
                         value={pokemonNameSearch}
-                        placeholder="Pokédex"
-                        _placeholder={{ color: 'teal', textAlign: 'center', fontWeight: 'bold' }}
+                        placeholder="Search Pokédex"
+                        _placeholder={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}
                         onChange={(event) => handleChange(event)}
                         onKeyPress={(event) => submitSearch(event)}
                     />
@@ -103,19 +91,35 @@ function PokemonListPage() {
                         {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
                     </InputRightElement>
                 </FormControl>
-
-                {pokemonInfo?.meta.current_page !== pokemonInfo?.meta.last_page ? (
-                    <IconButton
-                        aria-label="right-arrow"
-                        icon={<FaArrowRight color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => pageNav(pokemonInfo?.links.next ?? 'null')}
-                    />
-                ) : (
-                    <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
-                )}
+            </Flex>
+            <Flex bg="lightseagreen" position="fixed" bottom="0" left="0" right="0" w="100%" justifyContent="center">
+                <Box paddingLeft="10%">
+                    {startPage !== params.pageNum ? (
+                        <IconButton
+                            aria-label="left-arrow"
+                            icon={<FaArrowLeft color="white" />}
+                            size="lg"
+                            bgColor="lightseagreen"
+                            onClick={() => pageNav(pokemonInfo?.links.prev ?? 'null')}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                </Box>
+                <Spacer />
+                <Box paddingRight="10%">
+                    {pokemonInfo?.meta.current_page !== pokemonInfo?.meta.last_page ? (
+                        <IconButton
+                            aria-label="right-arrow"
+                            icon={<FaArrowRight color="white" />}
+                            size="lg"
+                            bgColor="lightseagreen"
+                            onClick={() => pageNav(pokemonInfo?.links.next ?? 'null')}
+                        />
+                    ) : (
+                        <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
+                    )}
+                </Box>
             </Flex>
 
             <SimpleGrid columns={{ base: 2, md: 3 }} spacing={4}>
@@ -172,5 +176,4 @@ function PokemonListPage() {
         </Container>
     );
 }
-
-export default PokemonListPage;
+export default PokemonListPageSmall;
