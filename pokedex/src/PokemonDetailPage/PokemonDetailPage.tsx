@@ -50,11 +50,14 @@ function PokemonDetailPage() {
 
             <Container bg="white">
                 <Flex>
-                    <Box paddingTop="3%">
-                        <b>{pokemonDetail?.name}</b> #{pokeID}
-                    </Box>
+                    <Flex paddingTop="2%">
+                        <Box fontWeight="bold" paddingRight="10px">
+                            {pokemonDetail?.name}
+                        </Box>
+                        <Box color="gray">#{pokeID}</Box>
+                    </Flex>
                     <Spacer />
-                    <Box paddingTop="2%">
+                    <Box paddingTop="2%" justifyContent="right">
                         {pokemonDetail?.types.map((type) => (
                             <Box
                                 key={type}
