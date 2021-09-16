@@ -33,9 +33,9 @@ export interface PokemonListInterface {
 }
 
 export interface PokemonDataLinksInterface {
-    first: string | undefined;
+    first: string;
     last: string;
-    prev: string | undefined;
+    prev: string;
     next: string;
 }
 

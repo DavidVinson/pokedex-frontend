@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { UrlParams, ApiDataInterface } from 'Types';
 import { getPokemonInfo, findPokemon, getPage } from 'Services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import PokeGrid from 'Components/PokeGrid/PokeGrid';
 import {
     Box,
     IconButton,
@@ -16,7 +17,6 @@ import {
     FormControl,
     Spacer,
 } from '@chakra-ui/react';
-import PokeGrid from 'Components/PokeGrid/PokeGrid';
 
 function PokemonListPageSmall() {
     const history = useHistory();
@@ -37,10 +37,6 @@ function PokemonListPageSmall() {
             setPokemonInfo(response.data);
             history.push(`/page/${pageNum}`);
         });
-    };
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setPokemonNameSearch(event.target.value);
     };
 
     const submitSearch = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -79,7 +75,7 @@ function PokemonListPageSmall() {
                         value={pokemonNameSearch}
                         placeholder="Search Pokédex"
                         _placeholder={{ color: 'white', textAlign: 'center', fontWeight: 'bold' }}
-                        onChange={(event) => handleChange(event)}
+                        onChange={(event) => setPokemonNameSearch(event.target.value)}
                         onKeyPress={(event) => submitSearch(event)}
                     />
 

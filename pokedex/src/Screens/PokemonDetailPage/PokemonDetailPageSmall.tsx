@@ -116,7 +116,7 @@ function PokemonDetailPageSmall() {
                     <GridItem>
                         <Stack>
                             <Box justifyContent="right"> {pokemonDetail?.height} m</Box>
-                            <Box justifyContent="right"> {pokemonDetail?.weight} m</Box>
+                            <Box justifyContent="right"> {pokemonDetail?.weight} kg</Box>
                             <Box textTransform="capitalize">
                                 {pokemonDetail?.egg_groups.map((group) => group).join(', ')}
                             </Box>

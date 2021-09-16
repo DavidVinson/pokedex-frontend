@@ -1,9 +1,10 @@
 import React from 'react';
-import { useEffect, useState, ChangeEvent, KeyboardEvent } from 'react';
+import { useEffect, useState, KeyboardEvent } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { UrlParams, ApiDataInterface } from 'Types';
 import { getPokemonInfo, findPokemon, getPage } from 'Services/api';
 import { FaSearch, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import PokeGrid from 'Components/PokeGrid/PokeGrid';
 import {
     IconButton,
     Input,
@@ -14,7 +15,6 @@ import {
     CloseButton,
     FormControl,
 } from '@chakra-ui/react';
-import PokeGrid from 'Components/PokeGrid/PokeGrid';
 
 function PokemonListPage() {
     const history = useHistory();
@@ -30,15 +30,13 @@ function PokemonListPage() {
     }, []);
 
     const pageNav = (page: string) => {
-        const pageNum = page?.slice(page?.indexOf('=') + 1);
-        getPage(page, pageNum, pokemonNameSearch).then((response) => {
-            setPokemonInfo(response.data);
-            history.push(`/page/${pageNum}`);
-        });
-    };
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setPokemonNameSearch(event.target.value);
+        if (page) {
+            const pageNum = page?.slice(page?.indexOf('=') + 1);
+            getPage(page, pageNum, pokemonNameSearch).then((response) => {
+                setPokemonInfo(response.data);
+                history.push(`/page/${pageNum}`);
+            });
+        }
     };
 
     const submitSearch = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -90,7 +88,7 @@ function PokemonListPage() {
                         value={pokemonNameSearch}
                         placeholder="Pokédex"
                         _placeholder={{ color: 'teal', textAlign: 'center', fontWeight: 'bold' }}
-                        onChange={(event) => handleChange(event)}
+                        onChange={(event) => setPokemonNameSearch(event.target.value)}
                         onKeyPress={(event) => submitSearch(event)}
                     />
 
