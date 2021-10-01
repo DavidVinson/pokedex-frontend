@@ -60,3 +60,7 @@ export interface GridProps {
 export interface StatsProps {
     props: PokemonDetailInterface | undefined;
 }
+
+export interface StatsDetail {
+    value: string | undefined;
+}
