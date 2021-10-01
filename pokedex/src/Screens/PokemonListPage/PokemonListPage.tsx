@@ -8,6 +8,7 @@ import PokeGrid from 'Components/PokeGrid/PokeGrid';
 import {
     IconButton,
     Input,
+    InputGroup,
     InputLeftElement,
     InputRightElement,
     Flex,
@@ -58,57 +59,54 @@ function PokemonListPage() {
     return (
         <Container height="100%" minH="100vh" bg="lightseagreen" padding="20px">
             <Flex justifyContent="center" paddingBottom="5%">
-                {startPage !== params.pageNum ? (
-                    <IconButton
-                        aria-label="left-arrow"
-                        icon={<FaArrowLeft color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => pageNav(pokemonInfo?.links.prev ?? 'null')}
-                    />
-                ) : (
-                    <IconButton aria-label="left-arrow" size="lg" disabled={true} visibility="hidden" />
-                )}
+                <IconButton
+                    aria-label="left-arrow"
+                    icon={<FaArrowLeft color="white" />}
+                    isRound={true}
+                    size="lg"
+                    bgColor="teal.500"
+                    onClick={() => pageNav(pokemonInfo?.links.prev ?? 'null')}
+                    disabled={startPage === params.pageNum}
+                    visibility={startPage === params.pageNum ? 'hidden' : 'visible'}
+                />
                 <FormControl id="text" marginLeft="10%" marginRight="10%">
-                    {pokemonNameSearch ? null : (
-                        <InputLeftElement pointerEvents="none" paddingTop="1.25rem" paddingLeft="1rem">
-                            <FaSearch color="white" />
-                        </InputLeftElement>
-                    )}
-                    <Input
-                        color="white"
-                        bg="teal.400"
-                        type="text"
-                        fontWeight="bold"
-                        fontSize="2rem"
-                        w="100%"
-                        h="60px"
-                        justifyContent="center"
-                        value={pokemonNameSearch}
-                        placeholder="Pokédex"
-                        _placeholder={{ color: 'teal', textAlign: 'center', fontWeight: 'bold' }}
-                        onChange={(event) => setPokemonNameSearch(event.target.value)}
-                        onKeyPress={(event) => submitSearch(event)}
-                    />
+                    <InputGroup>
+                        {pokemonNameSearch ? null : (
+                            <InputLeftElement pointerEvents="none" paddingTop="1.25rem" paddingLeft="1rem">
+                                <FaSearch color="white" />
+                            </InputLeftElement>
+                        )}
+                        <Input
+                            color="white"
+                            bg="teal.400"
+                            type="text"
+                            fontWeight="bold"
+                            fontSize="2rem"
+                            w="100%"
+                            h="60px"
+                            justifyContent="center"
+                            value={pokemonNameSearch}
+                            placeholder="Pokédex"
+                            _placeholder={{ color: 'teal', textAlign: 'center', fontWeight: 'bold' }}
+                            onChange={(event) => setPokemonNameSearch(event.target.value)}
+                            onKeyPress={(event) => submitSearch(event)}
+                        />
 
-                    <InputRightElement paddingRight="10px" paddingTop="1.25rem" paddingLeft="1rem">
-                        {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
-                    </InputRightElement>
+                        <InputRightElement paddingRight="10px" paddingTop="1.25rem" paddingLeft="1rem">
+                            {pokemonNameSearch && <CloseButton color="white" size="sm" onClick={onCloseSearch} />}
+                        </InputRightElement>
+                    </InputGroup>
                 </FormControl>
-
-                {pokemonInfo?.meta.current_page !== pokemonInfo?.meta.last_page ? (
-                    <IconButton
-                        aria-label="right-arrow"
-                        icon={<FaArrowRight color="white" />}
-                        isRound={true}
-                        size="lg"
-                        bgColor="teal.500"
-                        onClick={() => pageNav(pokemonInfo?.links.next ?? 'null')}
-                    />
-                ) : (
-                    <IconButton aria-label="right-arrow" size="lg" disabled={true} visibility="hidden" />
-                )}
+                <IconButton
+                    aria-label="right-arrow"
+                    icon={<FaArrowRight color="white" />}
+                    isRound={true}
+                    size="lg"
+                    bgColor="teal.500"
+                    onClick={() => pageNav(pokemonInfo?.links.next ?? 'null')}
+                    disabled={pokemonInfo?.meta.current_page === pokemonInfo?.meta.last_page}
+                    visibility={pokemonInfo?.meta.current_page === pokemonInfo?.meta.last_page ? 'hidden' : 'visible'}
+                />
             </Flex>
             <PokeGrid props={pokemonInfo} />
         </Container>
