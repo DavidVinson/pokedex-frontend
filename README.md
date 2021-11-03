@@ -5,7 +5,7 @@ The Pokedex Front End Challenge is a way to showcase various concepts of front e
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
 1.	Installation process
 2.	Software dependencies: 
-Axios, Chakra, React, Typescript
+Axios, Chakra, React, Typescript, and others!
 
 3.	Latest releases
 4.	API references: 
